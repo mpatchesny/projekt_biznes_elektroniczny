@@ -1,5 +1,3 @@
-./images
-./htmls
-results.json
-visited.txt
-pages_to_scrap.json
+images/
+htmls/
+*.bat
