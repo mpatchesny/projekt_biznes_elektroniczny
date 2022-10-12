@@ -1,0 +1,1 @@
+## Testy funkcjonalne sklepu internetowego
