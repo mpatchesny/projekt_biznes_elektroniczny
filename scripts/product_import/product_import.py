@@ -7,6 +7,16 @@ import os
 import sys
 import json
 
+class Product:
+    def __init__(self, productId, categories, priceWithoutTax, priceFull, unity, unitPrice, summary, description, tags, url, imageUrl, features):
+        pass
+
+    def toCsvString(self):
+        pass
+
+    def __str__(self):
+        pass
+
 class Category:
     def __init__(self, categoryId, active, name, parentCategory, isRoot, url):
         self.categoryId = categoryId
