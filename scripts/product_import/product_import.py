@@ -1,6 +1,6 @@
 #! python3
 
-# Skrypt, który tworzy pliki csv gotowe do importu do sklepu Prestashop
+# Skrypt, który tworzy pliki csv z produktami i kategoriami gotowe do importu do sklepu Prestashop
 # na podstawie wyniku ze skryptu webscraper.py
 
 import os
