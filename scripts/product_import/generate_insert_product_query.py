@@ -1,6 +1,6 @@
 #! python3
 
-# Skrypt, który tworzy plik SQL, który importuje produkty do bazy danych
+# Skrypt, który tworzy plik SQL do importu produktów do bazy danych
 
 import os
 import sys
@@ -27,7 +27,7 @@ def main(argv):
             queryTemplate = f2.read()
             sql = generateQuery(scrapData, queryTemplate)
 
-            with open("insert_product.sql", "w", encoding="utf-8") as f3:
+            with open("INSERT_PRODUCTS.sql", "w", encoding="utf-8") as f3:
                 f3.write(sql.join("\n\n\n"))
 
 main(sys.argv[1:])
