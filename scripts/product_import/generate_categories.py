@@ -1,21 +1,11 @@
 #! python3
 
-# Skrypt, który tworzy pliki csv z produktami i kategoriami gotowe do importu do sklepu Prestashop
+# Skrypt, który tworzy pliki csv z kategoriami gotowe do importu do sklepu Prestashop
 # na podstawie wyniku ze skryptu webscraper.py
 
 import os
 import sys
 import json
-
-class Product:
-    def __init__(self, productId, name, categories, priceWithoutTax, taxId, priceFull, unity, unitPrice, summary, description, tags, url, imageUrl, features):
-        pass
-
-    def toCsvString(self):
-        pass
-
-    def __str__(self):
-        pass
 
 class Category:
     def __init__(self, categoryId, active, name, parentCategory, isRoot, url):
@@ -38,10 +28,6 @@ def replacePolishDiacritics(text):
     for i in range(0, len(polish)):
         text = text.replace(polish[i], latin[i])
     return text
-
-def createProducts(scrapData, categories):
-    # Product ID;Active (0/1);Name *;Categories (x,y,z...);Price tax excluded;Tax rules ID;Wholesale price;On sale (0/1);Discount amount;Discount percent;Discount from (yyyy-mm-dd);Discount to (yyyy-mm-dd);Reference #;Supplier reference #;Supplier;Manufacturer;EAN13;UPC;Ecotax;Width;Height;Depth;Weight;Delivery time of in-stock products;Delivery time of out-of-stock products with allowed orders;Quantity;Minimal quantity;Low stock level;Send me an email when the quantity is under this level;Visibility;Additional shipping cost;Unity;Unit price;Summary;Description;Tags (x,y,z...);Meta title;Meta keywords;Meta description;URL rewritten;Text when in stock;Text when backorder allowed;Available for order (0 = No, 1 = Yes);Product available date;Product creation date;Show price (0 = No, 1 = Yes);Image URLs (x,y,z...);Image alt texts (x,y,z...);Delete existing images (0 = No, 1 = Yes);Feature(Name:Value:Position);Available online only (0 = No, 1 = Yes);Condition;Customizable (0 = No, 1 = Yes);Uploadable files (0 = No, 1 = Yes);Text fields (0 = No, 1 = Yes);Out of stock action;Virtual product;File URL;Number of allowed downloads;Expiration date;Number of days;ID / Name of shop;Advanced stock management;Depends On Stock;Warehouse;Acessories (x,y,z...)
-    pass
 
 def createCategories(scrapData):
     # Fields: Category ID, Active (0/1), Name *, Parent category, Root category (0/1), Description, Meta title, Meta keywords, Meta description, URL rewritten, Image URL
