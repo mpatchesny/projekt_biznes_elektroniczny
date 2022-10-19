@@ -8,7 +8,7 @@ import sys
 import json
 
 class Product:
-    def __init__(self, productId, categories, priceWithoutTax, priceFull, unity, unitPrice, summary, description, tags, url, imageUrl, features):
+    def __init__(self, productId, name, categories, priceWithoutTax, taxId, priceFull, unity, unitPrice, summary, description, tags, url, imageUrl, features):
         pass
 
     def toCsvString(self):
@@ -48,12 +48,13 @@ def createCategories(scrapData):
     currentCategoryId = 0
 
     allCategories = []
-    for x in scrapData:
-        categories = x["category"]
-        for i in range(0, 10):
+    for i in range(0, 10):
+        for x in scrapData:
+            categories = x["category"]
             if len(categories) > i:
                 categoryAlreadyAdded = False
-                isRoot = int((i==0))
+                # isRoot = int((i == 0))
+                isRoot = 0
                 url = str(categories[i]).lower().replace(" ", "-")
                 url = replacePolishDiacritics(url)
                 url = url.replace(",", "")
@@ -64,14 +65,16 @@ def createCategories(scrapData):
                         categoryAlreadyAdded = True
 
                 parentCat = None
-                for tempCat in allCategories:
-                    if tempCat.name == categories[i-1]:
-                        parentCat = tempCat
+                if i > 0:
+                    for tempCat in allCategories:
+                        if tempCat.name == categories[i-1]:
+                            parentCat = tempCat
 
                 if not categoryAlreadyAdded:
                     currentCategoryId += 1
                     parentCategoryName = ""
-                    if parentCat: parentCategoryName = parentCat.name
+                    if parentCat: 
+                        parentCategoryName = parentCat.name
                     c = Category(currentCategoryId, 1, categories[i], parentCategoryName, isRoot, url)
                     allCategories.append(c)
     
@@ -83,8 +86,10 @@ def main(argv):
         categories = createCategories(scrapData)
         product = createProducts(scrapData, categories)
 
-        for x in categories:
-            print(x.toCsvString(";"))
+        with open("categories.csv", "w", encoding="utf-8") as f2:
+            f2.write("Category ID;Active (0/1);Name *;Parent category;Root category (0/1);Description;Meta title;Meta keywords;Meta description;URL rewritten;Image URL\n")
+            for c in categories:
+                f2.write(c.toCsvString(";") + "\n")
 
 
 main(sys.argv[1:])
