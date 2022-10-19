@@ -70,7 +70,6 @@ def main(argv):
     with open(argv[0], "r") as f:
         scrapData = json.loads(f.read())
         categories = createCategories(scrapData)
-        product = createProducts(scrapData, categories)
 
         with open("categories.csv", "w", encoding="utf-8") as f2:
             f2.write("Category ID;Active (0/1);Name *;Parent category;Root category (0/1);Description;Meta title;Meta keywords;Meta description;URL rewritten;Image URL\n")
