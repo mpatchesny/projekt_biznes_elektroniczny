@@ -9,7 +9,8 @@ import json
 import math
 import shutil
 
-# Zapisywanie obrazków z folderu images w kolejności
+# Zapisywanie obrazków z folderu images z nowymi nazwami od 1, w folderach zaczynajacych
+# się od 1, w paczkach po 20 plików
 
 with open("result_no_dumps.json", "r") as f:
     results = json.loads(f.read())
@@ -34,7 +35,7 @@ for x in results:
             x["local_path_fixed"] = newImagePath
             imageId += 1
         else:
-            print(localFixed + " nie znaleziono")
+            print(localPathFixed + " nie znaleziono")
     else:
         print(x["name"] + " brak klucza local_path")
 
