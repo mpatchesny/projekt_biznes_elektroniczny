@@ -6,6 +6,8 @@
 
 import os
 import json
+import math
+import shutil
 
 # Sczytywanie obrazków z folderu images w kolejności
 
@@ -18,7 +20,8 @@ for _, _, files in os.walk("images"):
 with open("result_no_dumps.json", "r") as f:
     results = json.loads(f.read())
 
-startImageId = 506
+startImageId = 1
+filesPerFolder = 20
 for x in results:
     if x.get("local_path"):
         filename = x["local_path"]
@@ -26,7 +29,17 @@ for x in results:
         localFixed = os.getcwd() + "\\images\\" + filename
         if localFixed in images:
             position = images.index(localFixed)
-            x["image_id"] = startImageId + position
+            imageId = startImageId + position
+
+            newImagePath = os.getcwd() + "\\images\\" + str(math.ceil(imageId/ filesPerFolder))
+            if not os.path.exists(newImagePath):
+                os.mkdir(newImagePath)
+            newImageName = str(imageId) + ".jpg"
+            newImagePath = newImagePath + "\\" + newImageName
+
+            shutil.copy(localFixed, newImagePath)
+            x["image_id"] = imageId
+            x["local_path_fixed"] = newImagePath
         else:
             print(localFixed + " nie znaleziono")
     else:

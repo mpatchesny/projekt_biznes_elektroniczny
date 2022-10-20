@@ -1,25 +1,4 @@
 [{
-    "url": "https://ostrovit.com/pl/products/ostrovit-drozdze-piwne-200-tabletek-25728.html",
-    "name": "OstroVit Dro\u017cd\u017ce Piwne 200 tabletek ",
-    "price": "14,90 z\u0142",
-    "traits": [{
-        "Forma produktu:": "tabletki"
-    }, {
-        "Ilo\u015b\u0107 porcji:": "66"
-    }, {
-        "Liczba sztuk:": "200"
-    }, {
-        "Waga netto:": "95 g"
-    }, {
-        "Sk\u0142adnik dominuj\u0105cy:": "dro\u017cd\u017ce piwne"
-    }, {
-        "Kod EAN:": "5903933900537"
-    }],
-    "category": ["Dla sportowc\u00f3w", "Witaminy i minera\u0142y", "Witaminy dla kobiet"],
-    "versions": [],
-    "description": "OstroVit Brewer\u2019s Yeast to nowoczesny suplement diety zawieraj\u0105cy w swoim sk\u0142adzie witaminy z grupy B, \u017celazo, fosfor oraz inne minera\u0142y. Dro\u017cd\u017ce piwne w formie tabletek s\u0105 bezpieczne dla organizmu i wygodne w spo\u017cyciu. W przeciwie\u0144stwie do dro\u017cd\u017cy piekarniczych nie powoduj\u0105 przykrych dolegliwo\u015bci od strony uk\u0142adu pokarmowego.",
-    "local_path": "C:\\Users\\strielok\\Documents\\Repo\\studia\\webscraper\\images\\pol_pm_OstroVit-Drozdze-Piwne-200-tabletek-25728_1.png"
-}, {
     "url": "https://ostrovit.com/pl/products/ostrovit-magnesium-potassium-b6-shot-80-ml-21814.html",
     "name": "OstroVit Magnesium Potassium + B6 Shot 80 ml cytrynowo-limonkowo-winogronowy",
     "price": "3,50 z\u0142",
