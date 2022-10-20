@@ -8114,24 +8114,6 @@
     "description": "OstroVit Ekstrakt z Palmy Saba\u0142owej to naturalny suplement diety, kt\u00f3rego sk\u0142adniki  idealnie sprawdz\u0105 si\u0119 u os\u00f3b zmagaj\u0105cych si\u0119 z \u0142ysieniem androgenowym, a tak\u017ce o m\u0119\u017cczyznach cierpi\u0105cych na problemy z prostat\u0105. Ekstrakt pozyskiwany z owoc\u00f3w palmy zawiera du\u017ce ilo\u015bci substancji aktywnych, m.in. fitosteroli, flawonoid\u00f3w oraz heteropolisacharyd\u00f3w, kt\u00f3re zapewniaj\u0105 dzia\u0142anie prozdrowotne. ",
     "local_path": "C:\\Users\\strielok\\Documents\\Repo\\studia\\webscraper\\images\\pol_pm_OstroVit-Ekstrakt-z-Palmy-Sabalowej-100-g-25864_1.png"
 }, {
-    "url": "https://ostrovit.com/pl/products/ostrovit-omega-3-ultra-liquid-300-ml-19227.html",
-    "name": "OstroVit Omega 3 Ultra Liquid 300 ml ",
-    "price": "59,90 z\u0142",
-    "traits": [{
-        "Forma produktu:": "p\u0142yn"
-    }, {
-        "Ilo\u015b\u0107 porcji:": "150"
-    }, {
-        "Pojemno\u015b\u0107:": "300 ml"
-    }, {
-        "Sk\u0142adnik dominuj\u0105cy:": "olej rybi"
-    }, {
-        "Kod EAN:": "5903246220551"
-    }],
-    "category": ["Suplementy diety", "Zdrowe t\u0142uszcze", "Kwasy Omega 3"],
-    "versions": [],
-    "description": "OstroVit Omega 3 Ultra Liquid to suplement diety zawieraj\u0105cy wysok\u0105 zawarto\u015b\u0107 kwas\u00f3w t\u0142uszczowych DHA (kwas dokozaheksaenowy) i EPA (kwas eikozapentaenowy). Olejek zosta\u0142 umieszczony w specjalnych ciemnych butelkach, dzi\u0119ki czemu cenne kwasy t\u0142uszczowe omega-3 s\u0105 chronione przed szkodliwym dzia\u0142aniem promieni s\u0142onecznych i \u0142atwym utlenianiem."
-}, {
     "url": "https://ostrovit.com/pl/products/ostrovit-cytryniec-chinski-vege-90-kapsulek-25685.html",
     "name": "OstroVit Cytryniec Chi\u0144ski VEGE 90 kapsu\u0142ek ",
     "price": "32,90 z\u0142",
