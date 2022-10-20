@@ -18,7 +18,7 @@ for _, _, files in os.walk("images"):
 with open("result_no_dumps.json", "r") as f:
     results = json.loads(f.read())
 
-imageId = 28
+startImageId = 506
 for x in results:
     if x.get("local_path"):
         filename = x["local_path"]
@@ -26,7 +26,7 @@ for x in results:
         localFixed = os.getcwd() + "\\images\\" + filename
         if localFixed in images:
             position = images.index(localFixed)
-            x["image_id"] = 28 + position
+            x["image_id"] = startImageId + position
         else:
             print(localFixed + " nie znaleziono")
     else:
