@@ -9,14 +9,12 @@ import json
 import math
 import shutil
 
-# Zapisywanie obrazków z folderu images z nowymi nazwami od 1, w folderach zaczynajacych
-# się od 1, w paczkach po 20 plików
+# Zapisywanie obrazków z folderu images z nowymi nazwami od 1, w nowym folderze
 
 with open("result_no_dumps.json", "r") as f:
     results = json.loads(f.read())
 
 imageId = 1
-filesPerFolder = 20
 for x in results:
     if x.get("local_path"):
         filename = x["local_path"]
@@ -24,7 +22,7 @@ for x in results:
         localPathFixed = os.getcwd() + "\\images\\" + filename
         
         if os.path.exists(localPathFixed):
-            newImagePath = os.getcwd() + "\\images\\" + str(math.ceil(imageId/ filesPerFolder))
+            newImagePath = os.getcwd() + "\\images\\new_names"
             if not os.path.exists(newImagePath):
                 os.mkdir(newImagePath)
             newImageName = str(imageId) + ".jpg"
