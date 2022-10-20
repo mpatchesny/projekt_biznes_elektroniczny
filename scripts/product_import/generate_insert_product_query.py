@@ -12,18 +12,19 @@ def replaceBasicValues(product, templateCopy) -> str:
     cena = cena.replace(",", ".")
     cena = float(cena)
     cena = cena * (1-0.23)
-    templateCopy = templateCopy.replace("cena_netto", cena)
+    templateCopy = templateCopy.replace("{cena_netto}", cena)
 
     kategoria = product["category"][:-1]
-    templateCopy = templateCopy.replace("kategoria", kategoria)
+    templateCopy = templateCopy.replace("{kategoria}", kategoria)
 
     ean = "" # random
     for x in product["traits"]:
         if x.get("Kod EAN:"):
             ean = x.get("Kod EAN:")
-    templateCopy = templateCopy.replace("ean", ean)
-    templateCopy = templateCopy.replace("nazwa", product["name"])
-    templateCopy = templateCopy.replace("opis", product["description"])
+    templateCopy = templateCopy.replace("{ean}", ean)
+    templateCopy = templateCopy.replace("{nazwa}", product["name"])
+    templateCopy = templateCopy.replace("{opis}", product["description"])
+    templateCopy = templateCopy.replace("{image_id}", product["image_id"])
     return templateCopy
 
 def generateQueryForAttribs(product, template) -> list:
@@ -43,8 +44,8 @@ def generateQueryForAttribs(product, template) -> list:
     key = list(x.keys())
     templateCopy = template[:]
     templateCopy = replaceBasicValues(product, templateCopy)
-    templateCopy = templateCopy.replace("atrybut_nazwa", key[:-1])
-    templateCopy = templateCopy.replace("atrybut_wartosc", x[key])
+    templateCopy = templateCopy.replace("{atrybut_nazwa}", key[:-1])
+    templateCopy = templateCopy.replace("{atrybut_wartosc}", x[key])
     return list(templateCopy)
 
 def generateQueryForFeatures(product, template) -> list:
@@ -67,8 +68,8 @@ def generateQueryForFeatures(product, template) -> list:
         key = list(x.keys())[0]
         templateCopy = template[:]
         templateCopy = replaceBasicValues(product, templateCopy)
-        templateCopy = templateCopy.replace("nazwa_cechy", key[:-1])
-        templateCopy = templateCopy.replace("wartosc_cechy", x[key])
+        templateCopy = templateCopy.replace("{nazwa_cechy}", key[:-1])
+        templateCopy = templateCopy.replace("{wartosc_cechy}", x[key])
         li.append(templateCopy)
 
 def generateQueryForOneToOneTable(product, template) -> list:
