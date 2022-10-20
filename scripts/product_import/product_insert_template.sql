@@ -206,7 +206,7 @@ VALUES (
 --table:ps_image
 INSERT INTO prestashop.ps_image(id_imdage, id_product, position, cover) 
 VALUES (
-    TODO, -- id_image
+    {image_id}, -- id_image
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
     1, 
     1
@@ -214,7 +214,7 @@ VALUES (
 --table:ps_image_lang
 INSERT INTO prestashop.ps_image_lang(id_image, id_lang, legend) 
 VALUES (
-    TODO, -- id_image
+    {image_id}, -- id_image
     1, 
     NULL
 );
@@ -222,7 +222,7 @@ VALUES (
 INSERT INTO prestashop.ps_image_shop(id_product, id_image, id_shop, cover) 
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    TODO, -- id_image
+    {image_id}, -- id_image
     1, 
     1
 );
