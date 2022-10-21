@@ -4,3 +4,6 @@ htmls/
 *.bat
 *.csv
 *.txt
+temp.py
+how-to.md
+traits.json
