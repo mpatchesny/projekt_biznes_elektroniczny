@@ -2,7 +2,7 @@
 SET @newProductId := (SELECT COALESCE(MAX(id_product)+1, 1) FROM prestashop.ps_product);
 INSERT INTO prestashop.ps_product (id_product, id_supplier, id_manufacturer, id_category_default, id_shop_default, id_tax_rules_group, on_sale, online_only, ean13, isbn, upc, mpn, ecotax, quantity, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, reference, supplier_reference, location, width, height, depth, weight, out_of_stock, additional_delivery_times, quantity_discount, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_is_pack, cache_has_attachments, is_virtual, cache_default_attribute, date_add, date_upd, advanced_stock_management,  pack_stock_type, state, product_type)
 VALUES (
-    @newProductId -- FIXME: to nie przejdze
+    @newProductId 
     , -- id_product
     0, --id_supplier,
     2, --id_manufacturer,
@@ -60,6 +60,7 @@ VALUES (
     1, --state,
     '{product_type}' --product_type
 );
+
 --table:ps_product_lang
 INSERT INTO prestashop.ps_product_lang(id_product, id_shop, id_lang, description, description_short, link_rewrite, meta_description, meta_keywords, meta_title, name, available_now, available_later, delivery_in_stock, delivery_out_stock) 
 VALUES (
@@ -78,6 +79,7 @@ VALUES (
     NULL,
     NULL
 );
+
 --table:ps_product_shop
 INSERT INTO prestashop.ps_product_shop(id_product, id_shop, id_category_default, id_tax_rules_group, on_sale, online_only, ecotax, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_default_attribute, advanced_stock_management, date_add, date_upd, pack_stock_type)
 VALUES (
@@ -115,6 +117,7 @@ VALUES (
     (SELECT NOW() FROM dual), -- date_upd
     3, -- pack_stock_type
 );
+
 --table:ps_product_attribute
 SET @newProdAttrtibId := (SELECT COALESCE(MAX(id_product_attribute)+1, 1) FROM prestashop.ps_product_attribute);
 INSERT INTO prestashop.ps_product_attribute(id_product, id_product_attribute, reference, supplier_reference, location, ean13, isbn, upc, mpn, wholesale_price, price, ecotax, quantity, weight, unit_price_impact, default_on, minimal_quantity, low_stock_threshold, low_stock_alert, available_date)
@@ -140,12 +143,14 @@ VALUES (
     false, --low_stock_alert
     NULL, --available_date
 );
+
 --table:ps_product_attribute_combination
 INSERT INTO prestashop.ps_product_attribute_combination(id_attribute, id_product_attribute)
 VALUES (
     (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{atrybut_wartosc}' LIMIT 1),
     (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute)
 );
+
 --table:ps_product_attribute_shop
 INSERT INTO prestashop.ps_product_attribute_shop (id_product, id_shop, id_category_default, id_tax_rules_group, on_sale, online_only, ecotax, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_default_attribute, advanced_stock_management, date_add, date_upd, pack_stock_type)
 VALUES (
@@ -183,6 +188,7 @@ VALUES (
     (SELECT NOW() FROM dual), -- date_upd
     3, -- pack_stock_type
 );
+
 --table:ps_feature_value_lang
 SET @featureValueId := (SELECT COALESCE(MAX(id_feature_value)+1, 1) FROM prestashop.ps_feature_value_lang);
 INSERT INTO prestashop.ps_feature_value_lang(id_feature_value, id_lang, value)
@@ -191,6 +197,7 @@ VALUES (
     1,
     '{wartosc_cechy}'
 );
+
 --table:ps_feature_value
 INSERT INTO prestashop.ps_feature_value(id_feature_value, id_feature, custom)
 VALUES (
@@ -198,6 +205,7 @@ VALUES (
     (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' LIMIT 1), -- id_feature
     1
 );
+
 --table:ps_feature_product
 INSERT INTO prestashop.ps_feature_product(id_feature, id_product, id_feature_value)
 VALUES (
@@ -205,7 +213,9 @@ VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
     (SELECT MAX(id_feature_value) FROM prestashop.ps_feature_value_lang) -- id_feature_value
 );
+
 --table:ps_image
 UPDATE prestashop.ps_image SET id_product=(SELECT MAX(id_product) FROM prestashop.ps_product), position=1, cover=1 WHERE id_image={image_id};
+
 --table:ps_image_shop
 UPDATE prestashop.ps_image_shop SET id_product=(SELECT MAX(id_product) FROM prestashop.ps_product), id_shop=1, cover=1 WHERE id_image={image_id};

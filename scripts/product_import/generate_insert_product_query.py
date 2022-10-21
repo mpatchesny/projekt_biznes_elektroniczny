@@ -12,9 +12,10 @@ def replaceBasicValues(product, templateCopy) -> str:
     cena = cena.replace(",", ".")
     cena = float(cena)
     cena = cena * (1-0.23)
-    templateCopy = templateCopy.replace("{cena_netto}", cena)
+    cena = round(cena, 3)
+    templateCopy = templateCopy.replace("{cena_netto}", str(cena))
 
-    kategoria = product["category"][:-1]
+    kategoria = product["category"][-1]
     templateCopy = templateCopy.replace("{kategoria}", kategoria)
 
     ean = "" # random
@@ -23,14 +24,15 @@ def replaceBasicValues(product, templateCopy) -> str:
             ean = x.get("Kod EAN:")
     templateCopy = templateCopy.replace("{ean}", ean)
     templateCopy = templateCopy.replace("{nazwa}", product["name"])
+    templateCopy = templateCopy.replace("{product_type}", "NULL")
     templateCopy = templateCopy.replace("{opis}", product["description"])
-    templateCopy = templateCopy.replace("{image_id}", product["image_id"])
+    templateCopy = templateCopy.replace("{image_id}", str(product["image_id"]))
     return templateCopy
 
 def generateQueryForAttribs(product, template) -> list:
     elementToRemove=[]
     for x in product["traits"]:
-        for key in x.keys:
+        for key in x.keys():
             if key != "Smak:":
                 elementToRemove.append(x)
                 
@@ -40,18 +42,18 @@ def generateQueryForAttribs(product, template) -> list:
     if len(product["traits"])==0:
         return
 
-    x = product["traits"][0]
-    key = list(x.keys())
-    templateCopy = template[:]
-    templateCopy = replaceBasicValues(product, templateCopy)
-    templateCopy = templateCopy.replace("{atrybut_nazwa}", key[:-1])
-    templateCopy = templateCopy.replace("{atrybut_wartosc}", x[key])
-    return list(templateCopy)
+    for x in product["traits"]:
+        key = list(x.keys())[0]
+        templateCopy = template[:]
+        templateCopy = replaceBasicValues(product, templateCopy)
+        templateCopy = templateCopy.replace("{atrybut_nazwa}", key[:-1])
+        templateCopy = templateCopy.replace("{atrybut_wartosc}", x[key])
+        return [templateCopy]
 
 def generateQueryForFeatures(product, template) -> list:
     elementToRemove=[]
     for x in product["traits"]:
-        for key in x.keys:
+        for key in x.keys():
             if key == "Kod EAN:":
                 elementToRemove.append(x)
             elif key == "Smak:":
@@ -76,30 +78,48 @@ def generateQueryForFeatures(product, template) -> list:
 def generateQueryForSingleTable(product, template) -> list:
     templateCopy = template[:]
     templateCopy = replaceBasicValues(product, templateCopy)
-    return list(templateCopy)
+    return [templateCopy]
+
+def getSubqueries(templateCopy: str) -> list:
+    li = []
+    query = []
+    tableName =""
+    for x in templateCopy.split("\n"):
+        if x.startswith("--"):
+            tableName = x.split(":")[-1]
+        
+        if len(x) <= 1:
+            li.append(("\n".join(query), tableName))
+            query = []
+        else:
+            query.append(x)
+    
+    if query:
+        li.append(("\n".join(query), tableName))
+
+    return li
 
 def generateQueryForProduct(product, template) -> list:
-    li=[]
-    templateCopy= template[:]
-    subtemplates = templateCopy.split(");")
-    for temp in subtemplates:
-        temp = temp + ");"
-        tableName = temp.split("\n")[0]
-        tableName = tableName.split(":")[1]
+    li = []
+    templateCopy = template[:]
+    subQueries = getSubqueries(templateCopy)
+    for tup in subQueries:
+        query = tup[0]
+        tableName = tup[1]
 
         if tableName in ["ps_product", "ps_product_lang", "ps_product_shop", "ps_image", "ps_image_lang", "ps_image_shop"]:
-            sql = generateQueryForSingleTable(product, temp)
+            sql = generateQueryForSingleTable(product, query)
         # smak
         elif tableName in ["ps_product_attribute", "ps_product_attribute_combination", "ps_product_attribute_shop"]:
-            sql = generateQueryForAttribs(product, temp)
+            sql = generateQueryForAttribs(product, query)
         # pozstałe cehcy, oprócz kod EAN
         elif tableName in ["ps_feature_value_lang", "ps_feature_product", "ps_feature_value"]:
-            sql = generateQueryForFeatures(product, temp)
+            sql = generateQueryForFeatures(product, query)
 
-        for x in sql:
-            if x and len(x) > 0:
-                li.append(x)
-
+        if sql:
+            for x in sql:
+                if x and len(x) > 0:
+                    li.append(x)
     return li
 
 def generateQuery(scrapData, queryTemplate) -> list:
@@ -108,6 +128,10 @@ def generateQuery(scrapData, queryTemplate) -> list:
         sql = generateQueryForProduct(prod, queryTemplate)
         for x in sql:
             li.append(x)
+    
+        # DEBUG
+        break
+
     return li
 
 def main(argv):
@@ -119,6 +143,6 @@ def main(argv):
             sql = generateQuery(scrapData, queryTemplate)
 
             with open("INSERT_PRODUCTS.sql", "w", encoding="utf-8") as f3:
-                f3.write(sql.join("\n\n\n"))
+                f3.write("\n".join(sql))
 
 main(sys.argv[1:])
