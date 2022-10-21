@@ -1,7 +1,9 @@
 --table:ps_product
+SET @newProductId := (SELECT COALESCE(MAX(id_product)+1, 1) FROM prestashop.ps_product);
 INSERT INTO prestashop.ps_product (id_product, id_supplier, id_manufacturer, id_category_default, id_shop_default, id_tax_rules_group, on_sale, online_only, ean13, isbn, upc, mpn, ecotax, quantity, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, reference, supplier_reference, location, width, height, depth, weight, out_of_stock, additional_delivery_times, quantity_discount, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_is_pack, cache_has_attachments, is_virtual, cache_default_attribute, date_add, date_upd, advanced_stock_management,  pack_stock_type, state, product_type)
 VALUES (
-    (SELECT MAX(id_product)+1 FROM prestashop.ps_product), -- id_product
+    @newProductId -- FIXME: to nie przejdze
+    , -- id_product
     0, --id_supplier,
     2, --id_manufacturer,
     -- ostatnia kategoria
@@ -114,10 +116,11 @@ VALUES (
     3, -- pack_stock_type
 );
 --table:ps_product_attribute
+SET @newProdAttrtibId := (SELECT COALESCE(MAX(id_product_attribute)+1, 1) FROM prestashop.ps_product_attribute);
 INSERT INTO prestashop.ps_product_attribute(id_product, id_product_attribute, reference, supplier_reference, location, ean13, isbn, upc, mpn, wholesale_price, price, ecotax, quantity, weight, unit_price_impact, default_on, minimal_quantity, low_stock_threshold, low_stock_alert, available_date)
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    (SELECT MAX(id_product_attribute)+1 FROM prestashop.ps_product_attribute), --id_product_attribute
+    @newProdAttrtibId, --id_product_attribute
     NULL, --reference
     NULL, --supplier_reference
     NULL, --location
@@ -140,7 +143,7 @@ VALUES (
 --table:ps_product_attribute_combination
 INSERT INTO prestashop.ps_product_attribute_combination(id_attribute, id_product_attribute)
 VALUES (
-    (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{atrybut_wartosc}'),
+    (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{atrybut_wartosc}' LIMIT 1),
     (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute)
 );
 --table:ps_product_attribute_shop
@@ -181,9 +184,10 @@ VALUES (
     3, -- pack_stock_type
 );
 --table:ps_feature_value_lang
-INSERT INTO prestashop.ps_feature_value_lang(id_feature_value, id_lange, value)
+SET @featureValueId := (SELECT COALESCE(MAX(id_feature_value)+1, 1) FROM prestashop.ps_feature_value_lang);
+INSERT INTO prestashop.ps_feature_value_lang(id_feature_value, id_lang, value)
 VALUES (
-    (SELECT MAX(id_feature_value)+1 FROM prestashop.ps_feature_value_lang),
+    @featureValueId,
     1,
     '{wartosc_cechy}'
 );
@@ -191,38 +195,17 @@ VALUES (
 INSERT INTO prestashop.ps_feature_value(id_feature_value, id_feature, custom)
 VALUES (
     (SELECT MAX(id_feature_value) FROM prestashop.ps_feature_value_lang),
-    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}'), -- id_feature
-    1,
+    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' LIMIT 1), -- id_feature
+    1
 );
 --table:ps_feature_product
 INSERT INTO prestashop.ps_feature_product(id_feature, id_product, id_feature_value)
 VALUES (
-    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}'), -- id_feature
+    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' LIMIT 1), -- id_feature
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    (SELECT id_feature_value FROM prestashop.ps_feature_product WHERE value = '{wartosc_cechy}') -- id_feature_value
+    (SELECT MAX(id_feature_value) FROM prestashop.ps_feature_value_lang) -- id_feature_value
 );
--- /img/p/2/4/24.jpg
--- jak wstawić obrazek do dockera? ...
 --table:ps_image
-INSERT INTO prestashop.ps_image(id_imdage, id_product, position, cover) 
-VALUES (
-    {image_id}, -- id_image
-    (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    1, 
-    1
-);
---table:ps_image_lang
-INSERT INTO prestashop.ps_image_lang(id_image, id_lang, legend) 
-VALUES (
-    {image_id}, -- id_image
-    1, 
-    NULL
-);
+UPDATE prestashop.ps_image SET id_product=(SELECT MAX(id_product) FROM prestashop.ps_product), position=1, cover=1 WHERE id_image={image_id};
 --table:ps_image_shop
-INSERT INTO prestashop.ps_image_shop(id_product, id_image, id_shop, cover) 
-VALUES (
-    (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    {image_id}, -- id_image
-    1, 
-    1
-);
+UPDATE prestashop.ps_image_shop SET id_product=(SELECT MAX(id_product) FROM prestashop.ps_product), id_shop=1, cover=1 WHERE id_image={image_id};
