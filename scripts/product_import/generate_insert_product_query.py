@@ -71,8 +71,9 @@ def generateQueryForFeatures(product, template) -> list:
         templateCopy = templateCopy.replace("{nazwa_cechy}", key[:-1])
         templateCopy = templateCopy.replace("{wartosc_cechy}", x[key])
         li.append(templateCopy)
+    return li
 
-def generateQueryForOneToOneTable(product, template) -> list:
+def generateQueryForSingleTable(product, template) -> list:
     templateCopy = template[:]
     templateCopy = replaceBasicValues(product, templateCopy)
     return list(templateCopy)
@@ -87,7 +88,7 @@ def generateQueryForProduct(product, template) -> list:
         tableName = tableName.split(":")[1]
 
         if tableName in ["ps_product", "ps_product_lang", "ps_product_shop", "ps_image", "ps_image_lang", "ps_image_shop"]:
-            sql = generateQueryForOneToOneTable(product, temp)
+            sql = generateQueryForSingleTable(product, temp)
         # smak
         elif tableName in ["ps_product_attribute", "ps_product_attribute_combination", "ps_product_attribute_shop"]:
             sql = generateQueryForAttribs(product, temp)
