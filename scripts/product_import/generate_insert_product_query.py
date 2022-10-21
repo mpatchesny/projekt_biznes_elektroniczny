@@ -6,6 +6,20 @@ import os
 import sys
 import json
 
+def replacePolishDiacritics(text):
+    polish = "ęółśążźćń"
+    latin = "eolsazzcn"
+    for i in range(0, len(polish)):
+        text = text.replace(polish[i], latin[i])
+    return text
+
+def getLink(txt) -> str:
+    url = str(txt.lower().replace(" ", "-"))
+    url = replacePolishDiacritics(url)
+    url = url.replace(",", "")
+    url = url.replace("/", "-")
+    return url
+
 def replaceBasicValues(product, templateCopy) -> str:
     cena = product["price"]
     cena = cena.replace(" zł", "")
@@ -24,7 +38,8 @@ def replaceBasicValues(product, templateCopy) -> str:
             ean = x.get("Kod EAN:")
     templateCopy = templateCopy.replace("{ean}", ean)
     templateCopy = templateCopy.replace("{nazwa}", product["name"])
-    templateCopy = templateCopy.replace("{product_type}", "NULL")
+    templateCopy = templateCopy.replace("{link}", getLink(product["name"]))
+    templateCopy = templateCopy.replace("{product_type}", "3")
     templateCopy = templateCopy.replace("{opis}", product["description"])
     templateCopy = templateCopy.replace("{image_id}", str(product["image_id"]))
     return templateCopy

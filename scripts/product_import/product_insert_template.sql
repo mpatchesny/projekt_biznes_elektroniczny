@@ -1,6 +1,6 @@
 --table:ps_product
 SET @newProductId := (SELECT COALESCE(MAX(id_product)+1, 1) FROM prestashop.ps_product);
-INSERT INTO prestashop.ps_product (id_product, id_supplier, id_manufacturer, id_category_default, id_shop_default, id_tax_rules_group, on_sale, online_only, ean13, isbn, upc, mpn, ecotax, quantity, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, reference, supplier_reference, location, width, height, depth, weight, out_of_stock, additional_delivery_times, quantity_discount, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_is_pack, cache_has_attachments, is_virtual, cache_default_attribute, date_add, date_upd, advanced_stock_management,  pack_stock_type, state, product_type)
+INSERT INTO prestashop.ps_product
 VALUES (
     @newProductId 
     , -- id_product
@@ -22,13 +22,13 @@ VALUES (
     NULL, --low_stock_threshold,
     false, --low_stock_alert,
     '{cena_netto}', --price, minus 23%
-    0.0 --wholesale_price,
+    0.0, --wholesale_price,
     NULL, --unity,
     0.0, --unit_price_ratio,
     0.0, --additional_shipping_cost,
     '{ean}', --reference, 
     NULL, --supplier_reference,
-    NULL, --location,
+    'Magazyn domyślny', --location,
     0.0, --width,
     0.0, --height,
     0.0, --depth,
@@ -58,18 +58,19 @@ VALUES (
     false, --advanced_stock_management,
     3, --pack_stock_type,
     1, --state,
-    '{product_type}' --product_type
+    -- FIXME: nie moze byc pusty
+    NULL
 );
 
 --table:ps_product_lang
-INSERT INTO prestashop.ps_product_lang(id_product, id_shop, id_lang, description, description_short, link_rewrite, meta_description, meta_keywords, meta_title, name, available_now, available_later, delivery_in_stock, delivery_out_stock) 
+INSERT INTO prestashop.ps_product_lang
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product),
     1,
     1,
     NULL,
     '<p>{opis}</p>',
-    NULL, --link_rewrite
+    '{link}', --link_rewrite
     NULL, 
     NULL,
     NULL, -- meta_title
@@ -81,7 +82,7 @@ VALUES (
 );
 
 --table:ps_product_shop
-INSERT INTO prestashop.ps_product_shop(id_product, id_shop, id_category_default, id_tax_rules_group, on_sale, online_only, ecotax, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_default_attribute, advanced_stock_management, date_add, date_upd, pack_stock_type)
+INSERT INTO prestashop.ps_product_shop
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
     1, -- id_shop
@@ -115,18 +116,18 @@ VALUES (
     false, -- advanced_stock_management
     (SELECT NOW() FROM dual), -- date_add
     (SELECT NOW() FROM dual), -- date_upd
-    3, -- pack_stock_type
+    3 -- pack_stock_type
 );
 
 --table:ps_product_attribute
 SET @newProdAttrtibId := (SELECT COALESCE(MAX(id_product_attribute)+1, 1) FROM prestashop.ps_product_attribute);
-INSERT INTO prestashop.ps_product_attribute(id_product, id_product_attribute, reference, supplier_reference, location, ean13, isbn, upc, mpn, wholesale_price, price, ecotax, quantity, weight, unit_price_impact, default_on, minimal_quantity, low_stock_threshold, low_stock_alert, available_date)
+INSERT INTO prestashop.ps_product_attribute
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
     @newProdAttrtibId, --id_product_attribute
     NULL, --reference
     NULL, --supplier_reference
-    NULL, --location
+    'Magazyn domyślny', --location
     NULL, --ean13
     NULL, --isbn
     NULL, --upc
@@ -141,7 +142,7 @@ VALUES (
     1, --minimal_quantity
     NULL, --low_stock_threshold
     false, --low_stock_alert
-    NULL, --available_date
+    NULL --available_date
 );
 
 --table:ps_product_attribute_combination
@@ -152,41 +153,21 @@ VALUES (
 );
 
 --table:ps_product_attribute_shop
-INSERT INTO prestashop.ps_product_attribute_shop (id_product, id_shop, id_category_default, id_tax_rules_group, on_sale, online_only, ecotax, minimal_quantity, low_stock_threshold, low_stock_alert, price, wholesale_price, unity, unit_price_ratio, additional_shipping_cost, customizable, uploadable_files, text_fields, active, redirect_type, id_type_redirected, available_for_order, available_date, show_condition, condition, show_price, indexed, visibility, cache_default_attribute, advanced_stock_management, date_add, date_upd, pack_stock_type)
+INSERT INTO prestashop.ps_product_attribute_shop
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    1, --id_shop, 
-    (SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{kategoria}' LIMIT 1), -- id_category_default
-    1, --id_tax_rules_group, 
-    0, --on_sale, 
-    0, --online_only, 
-    0.0, --ecotax, 
-    1, --minimal_quantity, 
-    NULL, --low_stock_threshold, 
-    false, --low_stock_alert, 
-    '{cena_netto}', --price, 
-    0.0, --wholesale_price, 
-    NULL, --unity, 
-    0.0, --unit_price_ratio, 
-    0.0, --additional_shipping_cost, 
-    0, --customizable, 
-    0, --uploadable_files, 
-    0, --text_fields, 
-    1, --active, 
-    '301-category', --redirect_type, 
-    0, --id_type_redirected, 
-    true, --available_for_order, 
-    NULL, --available_date, 
-    false, --show_condition, 
-    'new', --condition, 
-    true, --show_price, 
-    true, --indexed, 
-    'both', --visibility, 
-    40, --cache_default_attribute, 
-    false, --advanced_stock_management, 
-    (SELECT NOW() FROM dual), -- date_add
-    (SELECT NOW() FROM dual), -- date_upd
-    3, -- pack_stock_type
+    (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), --id_product_attribute
+    1,
+    0.0, --wholesale_price
+    0.0, --price
+    0.0, --ecotax
+    0.0, --weight
+    0.0, --unit_price_impact
+    1, --default_on
+    1, --minimal_quantity
+    NULL, --low_stock_threshold
+    false, --low_stock_alert
+    NULL --available_date
 );
 
 --table:ps_feature_value_lang
