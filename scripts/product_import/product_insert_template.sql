@@ -2,11 +2,9 @@
 SET @newProductId := (SELECT COALESCE(MAX(id_product)+1, 1) FROM prestashop.ps_product);
 INSERT INTO prestashop.ps_product
 VALUES (
-    @newProductId 
-    , -- id_product
+    @newProductId, -- id_product
     0, --id_supplier,
     2, --id_manufacturer,
-    -- ostatnia kategoria
     (SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{kategoria}' LIMIT 1), --id_category_default,
     1, --id_shop_default,
     1, --id_tax_rules_group,
@@ -52,14 +50,13 @@ VALUES (
     false, --cache_is_pack,
     false, --cache_has_attachments,
     false, --is_virtual,
-    40, --cache_default_attribute,
+    0, --cache_default_attribute,
     (SELECT NOW() FROM dual), --date_add,
     (SELECT NOW() FROM dual), --date_upd,
     false, --advanced_stock_management,
     3, --pack_stock_type,
     1, --state,
-    -- FIXME: nie moze byc pusty
-    NULL
+    'pack'
 );
 
 --table:ps_product_lang
@@ -112,7 +109,7 @@ VALUES (
     true, -- show_price
     true, -- indexed
     'both', -- visibility
-    40, -- cache_default_attribute
+    0, -- cache_default_attribute
     false, -- advanced_stock_management
     (SELECT NOW() FROM dual), -- date_add
     (SELECT NOW() FROM dual), -- date_upd
@@ -127,7 +124,7 @@ VALUES (
     @newProdAttrtibId, --id_product_attribute
     NULL, --reference
     NULL, --supplier_reference
-    'Magazyn domyślny', --location
+    'Magazyn', --location
     NULL, --ean13
     NULL, --isbn
     NULL, --upc
@@ -168,6 +165,28 @@ VALUES (
     NULL, --low_stock_threshold
     false, --low_stock_alert
     NULL --available_date
+);
+
+--table:ps_stock_available
+SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);
+INSERT INTO prestashop.ps_stock_available VALUES
+(
+@newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), 0, 1, 0, 300, 300, 0, 0, 0, 'Magazyn'
+);
+
+--table:ps_stock_available_attrib
+SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);
+INSERT INTO prestashop.ps_stock_available VALUES
+(
+@newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0, 300, 300, 0, 0, 0, 'Magazyn'
+);
+
+--table:ps_category_product
+INSERT INTO prestashop.ps_category_product VALUES
+(
+    (SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{kategoria}' LIMIT 1),
+    (SELECT MAX(id_product) FROM prestashop.ps_product),
+    {i}
 );
 
 --table:ps_feature_value_lang
