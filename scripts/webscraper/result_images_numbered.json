@@ -7076,6 +7076,7 @@
     "traits": [{
         "Kolor:": "\u017c\u00f3\u0142ty"
     }],
+    "description": "OstroVit PILL BOX to prosty, ale jak najbardziej funkcjonalny pojemnik na Twoją codzienną porcję tabletek/kapsułek!\t\nZapomnij raz na zawsze o noszeniu zbędnych opakowań z suplementami\n\tDzięki swoim wymiarom zmieści się nawet w kieszeni\n\t5 przegródek na 5 różnych form suplementów. Kapsułki?? Tabletki?? To Ty decydujesz!\n\tUniwersalny, transparentny kolor\n\tLogo OstroVit na froncie pudełka\n",
     "category": ["Dla sportowc\u00f3w", "Akcesoria", "Pojemniki na \u017cywno\u015b\u0107 i suplementy"],
     "versions_name": "Kolor:",
     "versions": ["\u017c\u00f3\u0142ty", "niebieski", "r\u00f3\u017cowy", "zielony", "bia\u0142y"],
@@ -9825,27 +9826,7 @@
     "local_path": "C:\\Users\\strielok\\Documents\\Repo\\studia\\webscraper\\images\\pol_pm_OstroVit-Protein-Pancakes-2000-g-24335_1.png",
     "image_id": 428,
     "local_path_fixed": "C:\\Users\\strielok\\Documents\\Repo\\studia\\projekt_biznes_elektroniczny\\scripts\\webscraper\\images\\new_names\\428.jpg"
-}, {
-    "url": "https://ostrovit.com/pl/products/ostrovit-chlorella-vege-250-g-ostrovit-spirulina-vege-250-g-26040.html",
-    "name": "OstroVit Chlorella VEGE 250 g + OstroVit Spirulina VEGE 250 g naturalny",
-    "price": "64,80 z\u0142",
-    "traits": [{
-        "Smak:": "naturalny"
-    }, {
-        "Forma produktu:": "proszek"
-    }, {
-        "Ilo\u015b\u0107 porcji:": "125"
-    }, {
-        "Waga netto:": "500 g"
-    }, {
-        "Produkt wega\u0144ski:": "tak"
-    }],
-    "category": ["\u017bywno\u015b\u0107", "Superfoods"],
-    "versions": [],
-    "local_path": "C:\\Users\\strielok\\Documents\\Repo\\studia\\webscraper\\images\\pol_pm_OstroVit-Chlorella-VEGE-250-g-OstroVit-Spirulina-VEGE-250-g-26040_1.png",
-    "image_id": 429,
-    "local_path_fixed": "C:\\Users\\strielok\\Documents\\Repo\\studia\\projekt_biznes_elektroniczny\\scripts\\webscraper\\images\\new_names\\429.jpg"
-}, {
+},  {
     "url": "https://ostrovit.com/pl/products/ostrovit-chlorella-1000-tabletek-ostrovit-spirulina-1000-tabletek-25806.html",
     "name": "OstroVit Chlorella 1000 tabletek + OstroVit Spirulina 1000 tabletek ",
     "price": "53,82 z\u0142",

@@ -148,8 +148,6 @@ VALUES (
     (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{atrybut_wartosc}' LIMIT 1),
     (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute)
 );
-
---table:ps_product_attribute_shop
 INSERT INTO prestashop.ps_product_attribute_shop
 VALUES (
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
@@ -166,19 +164,17 @@ VALUES (
     false, --low_stock_alert
     NULL --available_date
 );
+SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);
+INSERT INTO prestashop.ps_stock_available VALUES
+(
+@newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0, 300, 300, 0, 0, 0, 'Magazyn'
+);
 
 --table:ps_stock_available
 SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);
 INSERT INTO prestashop.ps_stock_available VALUES
 (
 @newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), 0, 1, 0, 300, 300, 0, 0, 0, 'Magazyn'
-);
-
---table:ps_stock_available_attrib
-SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);
-INSERT INTO prestashop.ps_stock_available VALUES
-(
-@newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0, 300, 300, 0, 0, 0, 'Magazyn'
 );
 
 --table:ps_category_product
@@ -197,21 +193,17 @@ VALUES (
     1,
     '{wartosc_cechy}'
 );
-
---table:ps_feature_value
 INSERT INTO prestashop.ps_feature_value(id_feature_value, id_feature, custom)
 VALUES (
-    (SELECT MAX(id_feature_value) FROM prestashop.ps_feature_value_lang),
-    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' LIMIT 1), -- id_feature
+    (SELECT id_feature_value FROM prestashop.ps_feature_value_lang WHERE value ='{wartosc_cechy}' ORDER BY id_feature_value DESC LIMIT 1),
+    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' ORDER BY id_feature DESC LIMIT 1), -- id_feature
     1
 );
-
---table:ps_feature_product
 INSERT INTO prestashop.ps_feature_product(id_feature, id_product, id_feature_value)
 VALUES (
-    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' LIMIT 1), -- id_feature
+    (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{nazwa_cechy}' ORDER BY id_feature DESC LIMIT 1), -- id_feature
     (SELECT MAX(id_product) FROM prestashop.ps_product), -- id_product
-    (SELECT MAX(id_feature_value) FROM prestashop.ps_feature_value_lang) -- id_feature_value
+    (SELECT id_feature_value FROM prestashop.ps_feature_value_lang WHERE value ='{wartosc_cechy}' ORDER BY id_feature_value DESC LIMIT 1) -- id_feature_value
 );
 
 --table:ps_image
