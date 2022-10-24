@@ -135,14 +135,12 @@ VALUES (
     300, --quantity
     0.0, --weight
     0.0, --unit_price_impact
-    1, --default_on
+    {default_attrib}, --default_on
     1, --minimal_quantity
     NULL, --low_stock_threshold
     false, --low_stock_alert
     NULL --available_date
 );
-
---table:ps_product_attribute_combination
 INSERT INTO prestashop.ps_product_attribute_combination(id_attribute, id_product_attribute)
 VALUES (
     (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{atrybut_wartosc}' LIMIT 1),
@@ -158,7 +156,7 @@ VALUES (
     0.0, --ecotax
     0.0, --weight
     0.0, --unit_price_impact
-    1, --default_on
+    {default_attrib}, --default_on
     1, --minimal_quantity
     NULL, --low_stock_threshold
     false, --low_stock_alert
