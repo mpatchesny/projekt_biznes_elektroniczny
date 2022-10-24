@@ -9,3 +9,4 @@ how-to.md
 traits.json
 DELETE FROM prestashop.ps_product*
 features_x_products.sql
+rollback.sql
