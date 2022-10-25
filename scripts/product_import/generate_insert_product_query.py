@@ -56,13 +56,13 @@ def generateQueryForProductCategories(product) -> str:
     name = name.replace("'", "''")
 
     category = 'Strona główna'
-    query = f"""INSERT INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1),(SELECT id_product FROM prestashop.ps_product_lang WHERE name='{name}' LIMIT 1), {i});"""
+    query = f"""INSERT IGNORE INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1),(SELECT id_product FROM prestashop.ps_product_lang WHERE name='{name}' LIMIT 1), {i});"""
     i += 1
     li.append(query)
 
     for x in product["category"]:
         category = x
-        query = f"""INSERT INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1), (SELECT id_product FROM prestashop.ps_product_lang WHERE name='{name}' LIMIT 1), {i});"""
+        query = f"""INSERT IGNORE INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1), (SELECT id_product FROM prestashop.ps_product_lang WHERE name='{name}' LIMIT 1), {i});"""
         li.append(query)
         i += 1
     return "\n".join(li)
@@ -137,7 +137,8 @@ def generateQueryForProductImage(product) -> str:
 
 def generateQueryForOneProduct(product) -> list:
     li = []
-    functions = [generateQueryForProduct, generateQueryForProductCategories, generateQueryForProductFeatures, generateQueryForProductAttributes, generateQueryForProductImage]
+    # functions = [generateQueryForProduct, generateQueryForProductCategories, generateQueryForProductFeatures, generateQueryForProductAttributes, generateQueryForProductImage]
+    functions = [generateQueryForProductCategories]
     for func in functions:
         sql = func(product)
 
