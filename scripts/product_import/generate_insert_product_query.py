@@ -19,6 +19,7 @@ def getLink(txt) -> str:
     url = url.replace(",", "")
     url = url.replace("'", "")
     url = url.replace(".", "")
+    url = url.replace("+", "-")
     url = url.replace("/", "-")
     return url
 
@@ -60,24 +61,28 @@ def generateQueryForProductCategories(product) -> str:
 
 def generateQueryForProductFeatures(product) -> str:
     """ Generuje zapytanie dla tabel dotyczących funkcje produktów """
-    li = []
     if not product.get("features"):
         return
+
+    li = []
     for x in product["features"]:
         for key in x.keys():
-            feature_name = key[:-1]
-            feature_value = x[key]
+            if not (key in ["Rodzaj", "Smak", "Rodzaj shota", "Kolor", "Rodzaj:", "Smak:", "Rodzaj shota:", "Kolor:"]):
+                feature_name = key[:-1]
+                feature_name = feature_name.replace("'", "''")
+                feature_value = x[key]
+                feature_value = feature_value.replace("'", "''")
 
-            query1 = f"""SET @featureValueId := (SELECT COALESCE(MAX(id_feature_value)+1, 1) FROM prestashop.ps_feature_value_lang);\nINSERT INTO prestashop.ps_feature_value_lang(id_feature_value, id_lang, value) VALUES (@featureValueId, 1, '{feature_value}');"""
+                query1 = f"""SET @featureValueId := (SELECT COALESCE(MAX(id_feature_value)+1, 1) FROM prestashop.ps_feature_value_lang);\nINSERT INTO prestashop.ps_feature_value_lang(id_feature_value, id_lang, value) VALUES (@featureValueId, 1, '{feature_value}');"""
 
-            query2 = f"""INSERT INTO prestashop.ps_feature_value(id_feature_value, id_feature, custom) VALUES ((SELECT id_feature_value FROM prestashop.ps_feature_value_lang WHERE value ='{feature_value}' ORDER BY id_feature_value DESC LIMIT 1), (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{feature_name}' ORDER BY id_feature DESC LIMIT 1), 1);"""
+                query2 = f"""INSERT INTO prestashop.ps_feature_value(id_feature_value, id_feature, custom) VALUES ((SELECT id_feature_value FROM prestashop.ps_feature_value_lang WHERE value ='{feature_value}' ORDER BY id_feature_value DESC LIMIT 1), (SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{feature_name}' ORDER BY id_feature DESC LIMIT 1), 1);"""
 
-            query3 = f"""INSERT INTO prestashop.ps_feature_product(id_feature, id_product, id_feature_value) VALUES ((SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{feature_name}' ORDER BY id_feature DESC LIMIT 1), (SELECT MAX(id_product) FROM prestashop.ps_product),(SELECT id_feature_value FROM prestashop.ps_feature_value_lang WHERE value ='{feature_value}' ORDER BY id_feature_value DESC LIMIT 1));"""
+                query3 = f"""INSERT INTO prestashop.ps_feature_product(id_feature, id_product, id_feature_value) VALUES ((SELECT id_feature FROM prestashop.ps_feature_lang WHERE name ='{feature_name}' ORDER BY id_feature DESC LIMIT 1), (SELECT MAX(id_product) FROM prestashop.ps_product),(SELECT id_feature_value FROM prestashop.ps_feature_value_lang WHERE value ='{feature_value}' ORDER BY id_feature_value DESC LIMIT 1));"""
 
-            li.append(query1)
-            li.append(query2)
-            li.append(query3)
-    "\n".join(li)
+                li.append(query1)
+                li.append(query2)
+                li.append(query3)
+    return "\n".join(li)
 
 def generateQueryForProductAttributes(product) -> str:
     """ Generuje zapytanie dla tabel dotyczących atrybutów produktów """
@@ -85,29 +90,33 @@ def generateQueryForProductAttributes(product) -> str:
     if not product.get("attributes"):
         return
 
-    is_default = 1
+    is_default = "1"
     for x in product["attributes"]:
         for key in x.keys():
-            attribute_name = key[:-1]
-            attribute_value = x[key]
+            if not key in ["Liczba sztuk:", "Opór:"]:
+                attribute_name = key[:-1]
+                attribute_name = attribute_name.replace("'", "''")
+                attribute_value = x[key]
+                attribute_value = attribute_value.replace("'", "''")
 
-            prodAttributeLookup = f"""INSERT INTO prestashop.ps_attribute_lang SELECT (SELECT COALESCE(MAX(id_attribute)+1, 1) FROM prestashop.ps_attribute_lang), 1, 'cytrynowy' FROM DUAL WHERE NOT EXISTS (SELECT * FROM prestashop.ps_attribute_lang WHERE name='{attribute_value}' LIMIT 1);\nINSERT INTO prestashop.ps_attribute SELECT (SELECT MAX(id_attribute) FROM prestashop.ps_attribute_lang), (SELECT id_attribute_group FROM prestashop.ps_attribute_group_lang WHERE name='{attribute_name}' LIMIT 1), NULL, 0 FROM DUAL WHERE NOT EXISTS (SELECT * FROM prestashop.ps_attribute WHERE id_attribute = (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name='{attribute_value}' LIMIT 1) LIMIT 1);"""
+                prodAttributeLookup = f"""INSERT INTO prestashop.ps_attribute_lang SELECT (SELECT COALESCE(MAX(id_attribute)+1, 1) FROM prestashop.ps_attribute_lang), 1, '{attribute_value}' FROM DUAL WHERE NOT EXISTS (SELECT * FROM prestashop.ps_attribute_lang WHERE name='{attribute_value}' LIMIT 1);\nINSERT INTO prestashop.ps_attribute SELECT (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name='{attribute_value}' LIMIT 1), (SELECT id_attribute_group FROM prestashop.ps_attribute_group_lang WHERE name='{attribute_name}' LIMIT 1), 'color', 0 FROM DUAL WHERE NOT EXISTS (SELECT * FROM prestashop.ps_attribute WHERE id_attribute = (SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name='{attribute_value}' LIMIT 1) LIMIT 1);"""
 
-            prodAttribute = f"""SET @newProdAttrtibId := (SELECT COALESCE(MAX(id_product_attribute)+1, 1) FROM prestashop.ps_product_attribute);\nINSERT INTO prestashop.ps_product_attribute VALUES ((SELECT MAX(id_product) FROM prestashop.ps_product), @newProdAttrtibId, NULL, NULL, 'Magazyn', NULL, NULL, NULL, NULL, 0.0, 0.0, 0.0, 300, 0.0, 0.0, {is_default}, 1, NULL, false, NULL);"""
+                prodAttribute = f"""SET @newProdAttrtibId := (SELECT COALESCE(MAX(id_product_attribute)+1, 1) FROM prestashop.ps_product_attribute);\nINSERT INTO prestashop.ps_product_attribute VALUES (@newProdAttrtibId, (SELECT MAX(id_product) FROM prestashop.ps_product), NULL, NULL, 'Magazyn', NULL, NULL, NULL, NULL, 0.0, 0.0, 0.0, 300, 0.0, 0.0, {is_default}, 1, NULL, false, NULL);"""
 
-            prodAttribCombination = f"""INSERT INTO prestashop.ps_product_attribute_combination(id_attribute, id_product_attribute) VALUES ((SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{attribute_value}' LIMIT 1), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute));"""
+                prodAttribCombination = f"""INSERT INTO prestashop.ps_product_attribute_combination(id_attribute, id_product_attribute) VALUES ((SELECT id_attribute FROM prestashop.ps_attribute_lang WHERE name = '{attribute_value}' LIMIT 1), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute));"""
 
-            prodAttributeShop = f"""INSERT INTO prestashop.ps_product_attribute_shop VALUES ((SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0.0, 0.0, 0.0, 0.0, 0.0, {is_default}, 1, NULL, false, NULL);"""
+                prodAttributeShop = f"""INSERT INTO prestashop.ps_product_attribute_shop VALUES ((SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0.0, 0.0, 0.0, 0.0, 0.0, {is_default}, 1, NULL, false, NULL);"""
 
-            stockAvailable = f"""SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);\nINSERT INTO prestashop.ps_stock_available VALUES (@newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0, 300, 300, 0, 0, 0, 'Magazyn');"""
+                stockAvailable = f"""SET @newStockAId := (SELECT COALESCE(MAX(id_stock_available)+1, 1) FROM prestashop.ps_stock_available);\nINSERT INTO prestashop.ps_stock_available VALUES (@newStockAId, (SELECT MAX(id_product) FROM prestashop.ps_product), (SELECT MAX(id_product_attribute) FROM prestashop.ps_product_attribute), 1, 0, 300, 300, 0, 0, 0, 'Magazyn');"""
 
-            li.append(prodAttributeLookup)
-            li.append(prodAttribute)
-            li.append(prodAttribCombination)
-            li.append(prodAttributeShop)
-            li.append(stockAvailable)
+                li.append(prodAttributeLookup)
+                li.append(prodAttribute)
+                li.append(prodAttribCombination)
+                li.append(prodAttributeShop)
+                li.append(stockAvailable)
+                li.append("\n")
 
-            if (is_default == 1): is_default = 0
+                if (is_default == "1"): is_default = "NULL"
 
     return "\n".join(li)
 
@@ -120,11 +129,12 @@ def generateQueryForProductImage(product) -> str:
 
 def generateQueryForOneProduct(product) -> list:
     li = []
-    functions = [generateQueryForProduct, generateQueryForProductCategories, generateQueryForProductFeatures, generateQueryForProductAttributes,generateQueryForProductImage]
+    functions = [generateQueryForProduct, generateQueryForProductCategories, generateQueryForProductFeatures, generateQueryForProductAttributes, generateQueryForProductImage]
     for func in functions:
         sql = func(product)
+
         if sql:
-            li.append(f"--{func}")
+            li.append(f"/* {func} */")
             li.append(sql)
     return li
 
