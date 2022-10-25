@@ -50,11 +50,19 @@ def generateQueryForProduct(product) -> str:
 
 def generateQueryForProductCategories(product) -> str:
     """ Generuje zapytanie dla tabel dotyczących kategorii produktów """
-    li = []
     i = 1
+    li = []
+    name = product["name"]
+    name = name.replace("'", "''")
+
+    category = 'Strona główna'
+    query = f"""INSERT INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1),(SELECT id_product FROM prestashop.ps_product_lang WHERE name='{name}' LIMIT 1), {i});"""
+    i += 1
+    li.append(query)
+
     for x in product["category"]:
         category = x
-        query = f"""INSERT INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1), (SELECT MAX(id_product) FROM prestashop.ps_product), {i});"""
+        query = f"""INSERT INTO prestashop.ps_category_product VALUES ((SELECT id_category FROM prestashop.ps_category_lang WHERE name = '{category}' LIMIT 1), (SELECT id_product FROM prestashop.ps_product_lang WHERE name='{name}' LIMIT 1), {i});"""
         li.append(query)
         i += 1
     return "\n".join(li)
