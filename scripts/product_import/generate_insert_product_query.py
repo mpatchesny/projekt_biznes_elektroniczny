@@ -68,7 +68,7 @@ def generateQueryForProductFeatures(product) -> str:
     for x in product["features"]:
         for key in x.keys():
             if not (key in ["Rodzaj", "Smak", "Rodzaj shota", "Kolor", "Rodzaj:", "Smak:", "Rodzaj shota:", "Kolor:"]):
-                feature_name = key[:-1]
+                feature_name = key
                 feature_name = feature_name.replace("'", "''")
                 feature_value = x[key]
                 feature_value = feature_value.replace("'", "''")
