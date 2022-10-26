@@ -1,6 +1,7 @@
 assets/
 images/
 htmls/
+dump.tar/
 *.bat
 *.csv
 *.txt
