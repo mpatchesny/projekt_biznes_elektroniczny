@@ -3,7 +3,6 @@ images/
 htmls/
 dump.tar/
 *.bat
-*.csv
 *.txt
 temp.py
 how-to.md
