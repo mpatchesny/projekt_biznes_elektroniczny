@@ -14,13 +14,16 @@ def replacePolishDiacritics(text):
     return text
 
 def getLink(txt) -> str:
-    url = str(txt.lower().replace(" ", "-"))
+    url = str(txt.lower())
     url = replacePolishDiacritics(url)
+    url = url.replace(" ", "-")
     url = url.replace(",", "")
     url = url.replace("'", "")
     url = url.replace(".", "")
     url = url.replace("+", "-")
     url = url.replace("/", "-")
+    url = url.replace("%", "")
+    url = url.replace("&", "-")
     return url
 
 def generateQueryForProduct(product) -> str:
