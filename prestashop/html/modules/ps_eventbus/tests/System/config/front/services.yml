@@ -1,0 +1,3 @@
+imports:
+  - { resource: ../../../../config/front/services.yml }
+  - { resource: ../overrides/services.yml }
