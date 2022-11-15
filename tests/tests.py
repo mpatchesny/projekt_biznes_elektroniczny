@@ -117,7 +117,10 @@ def select_delivery_method(driver):
     li.append(driver.find_element(By.ID, "delivery_option_17"))
     li.append(driver.find_element(By.ID, "delivery_option_16"))
     li.append(driver.find_element(By.ID, "delivery_option_14"))
-    random.choice(li).click()
+    try:
+        random.choice(li).click()
+    except:
+        pass
 
     li = driver.find_elements(By.TAG_NAME, "button")
     for x in li:
@@ -139,18 +142,19 @@ def do_checkout(driver):
     driver.get("http://localhost:8080/zam%C3%B3wienie")
 
     address = driver.find_element(By.NAME, "address1")
-    address.sendkeys("Gabriela Narutowicza 11/12")
+    address.send_keys("Gabriela Narutowicza 11/12")
     
     postcode = driver.find_element(By.NAME, "postcode")
-    postcode.sendkeys("80-233")
+    postcode.send_keys("80-233")
 
     city = driver.find_element(By.NAME, "city")
-    city.sendkeys("Gdańsk")
+    city.send_keys("Gdańsk")
 
     li = driver.find_elements(By.TAG_NAME, "button")
     for x in li:
         if x.text.lower() == "dalej":
             x.click()
+            break
 
     if select_delivery_method(driver):
         if select_cash_on_delivery(driver):
