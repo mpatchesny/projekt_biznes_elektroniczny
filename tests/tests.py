@@ -68,6 +68,7 @@ def register_new_account(driver):
     for x in li:
         if x.text.lower() == "zapisz":
             x.click()
+            return True
 
 def add_random_product_to_basket(driver, amount):
     product_pages = []
@@ -94,6 +95,7 @@ def add_random_product_to_basket(driver, amount):
         if x.text.lower().endswith("dodaj do koszyka"):
             x.click()
             driver.get(link)
+            return True
 
 def remove_random_product_from_basket(driver):
     driver.get("http://localhost:8080/koszyk?action=show")
@@ -103,10 +105,12 @@ def remove_random_product_from_basket(driver):
         products[i] = products[i].get_attribute("href")
     product = random.choice(products)
     driver.get(product)
+    return True
 
 def select_cash_on_delivery(driver):
     cod = driver.find_element(By.ID, "payment-option-2")
     cod.click()
+    return True
 
 def select_delivery_method(driver):
     li = []
@@ -119,6 +123,7 @@ def select_delivery_method(driver):
     for x in li:
         if x.text.lower() == "dalej":
             x.click()
+            return True
 
 def confirm_order(driver):
     conditions_to_approve = driver.find_element(By.ID, "conditions_to_approve[terms-and-conditions]")
@@ -128,6 +133,7 @@ def confirm_order(driver):
     for x in li:
         if x.text.lower() == "złóż zamówienie":
             x.click()
+            return True
 
 def do_checkout(driver):
     driver.get("http://localhost:8080/zam%C3%B3wienie")
@@ -146,9 +152,10 @@ def do_checkout(driver):
         if x.text.lower() == "dalej":
             x.click()
 
-    select_delivery_method(driver)
-    select_cash_on_delivery(driver)
-    confirm_order(driver)
+    if select_delivery_method(driver):
+        if select_cash_on_delivery(driver):
+            if confirm_order(driver):
+                return True
 
 def check_order_status(driver):
     driver.get("http://localhost:8080/historia-zamowien")
@@ -158,22 +165,23 @@ def check_order_status(driver):
         if x.text.lower().endswith("szczegóły"):
             link = x.get_attribute("href")
             driver.get(link)
+            return True
 
 def run_test_scenario():
     driver = webdriver.Edge(executable_path = r"C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\tests\msedgedriver.exe")
-    register_new_account(driver)
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    add_random_product_to_basket(driver, random.randint(1, 5))
-    remove_random_product_from_basket(driver)
-    do_checkout(driver)
-    check_order_status(driver)
+    assert register_new_account(driver), "register new account with valid data should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #1 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #2 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #3 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #4 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #5 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #6 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #7 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #8 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #9 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #10 to basket should succeed"
+    assert remove_random_product_from_basket(driver), "remove random product from non-empty basket should succeed"
+    assert do_checkout(driver), "checkout of non-empty basket should succeed"
+    assert check_order_status(driver), "check order status when order has been placed should succeed"
 
 run_test_scenario()
