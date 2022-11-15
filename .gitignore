@@ -4,6 +4,7 @@ htmls/
 dump.tar/
 *.bat
 *.txt
+*.exe
 temp.py
 how-to.md
 traits.json
