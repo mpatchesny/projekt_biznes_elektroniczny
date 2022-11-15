@@ -68,9 +68,6 @@ def register_new_account(driver):
     for x in li:
         if x.text.lower() == "zapisz":
             x.click()
-            return True
-            
-    return False
 
 def add_random_product_to_basket(driver, amount):
     product_pages = []
@@ -90,16 +87,13 @@ def add_random_product_to_basket(driver, amount):
     quantity = driver.find_element(By.ID, "quantity_wanted")
     quantity.send_keys(Keys.CONTROL, 'a')
     quantity.send_keys(Keys.BACKSPACE)
-    quantity.send_keys(str(quantity))
+    quantity.send_keys(amount)
 
     li = driver.find_elements(By.TAG_NAME, "button")
     for x in li:
         if x.text.lower().endswith("dodaj do koszyka"):
             x.click()
             driver.get(link)
-            return True
-
-    return False
 
 def remove_random_product_from_basket(driver):
     driver.get("http://localhost:8080/koszyk?action=show")
@@ -108,10 +102,7 @@ def remove_random_product_from_basket(driver):
     for i in range(0, len(products)):
         products[i] = products[i].get_attribute("href")
     product = random.choice(products)
-    product.click()
-
-def do_checkout(driver):
-    driver.get("http://localhost:8080/zam%C3%B3wienie")
+    driver.get(product)
 
 def select_cash_on_delivery(driver):
     cod = driver.find_element(By.ID, "payment-option-2")
@@ -124,7 +115,12 @@ def select_delivery_method(driver):
     li.append(driver.find_element(By.ID, "delivery_option_14"))
     random.choice(li).click()
 
-def approve_order(driver):
+    li = driver.find_elements(By.TAG_NAME, "button")
+    for x in li:
+        if x.text.lower() == "dalej":
+            x.click()
+
+def confirm_order(driver):
     conditions_to_approve = driver.find_element(By.ID, "conditions_to_approve[terms-and-conditions]")
     conditions_to_approve.click()
 
@@ -132,30 +128,52 @@ def approve_order(driver):
     for x in li:
         if x.text.lower() == "złóż zamówienie":
             x.click()
-            return True
-    return False
+
+def do_checkout(driver):
+    driver.get("http://localhost:8080/zam%C3%B3wienie")
+
+    address = driver.find_element(By.NAME, "address1")
+    address.sendkeys("Gabriela Narutowicza 11/12")
+    
+    postcode = driver.find_element(By.NAME, "postcode")
+    postcode.sendkeys("80-233")
+
+    city = driver.find_element(By.NAME, "city")
+    city.sendkeys("Gdańsk")
+
+    li = driver.find_elements(By.TAG_NAME, "button")
+    for x in li:
+        if x.text.lower() == "dalej":
+            x.click()
+
+    select_delivery_method(driver)
+    select_cash_on_delivery(driver)
+    confirm_order(driver)
 
 def check_order_status(driver):
-    pass
+    driver.get("http://localhost:8080/historia-zamowien")
+
+    li = driver.find_elements(By.TAG_NAME, "a")
+    for x in li:
+        if x.text.lower().endswith("szczegóły"):
+            link = x.get_attribute("href")
+            driver.get(link)
 
 def run_test_scenario():
     driver = webdriver.Edge(executable_path = r"C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\tests\msedgedriver.exe")
     register_new_account(driver)
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
-    add_random_product_to_basket(driver, random.randint(1, 10))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
+    add_random_product_to_basket(driver, random.randint(1, 5))
     remove_random_product_from_basket(driver)
-    # do_checkout(driver)
-    # select_cash_on_delivery(driver)
-    # select_delivery_method(driver)
-    # approve_order(driver)
-    # check_order_status(driver)
+    do_checkout(driver)
+    check_order_status(driver)
 
 run_test_scenario()
