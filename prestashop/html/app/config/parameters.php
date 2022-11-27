@@ -1,7 +1,7 @@
 <?php return array (
   'parameters' => 
   array (
-    'database_host' => '172.18.0.3',
+    'database_host' => getenv('DB_SERVER'),
     'database_port' => '',
     'database_name' => 'prestashop',
     'database_user' => 'root',
