@@ -6,6 +6,8 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=prestashop
+    networks:
+      - duzy-biceps-net
 
   duzy-biceps-init:
     image: mysql:latest
@@ -13,6 +15,8 @@ services:
     volumes: 
       - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\mysql\database_dump.sql:/home/database_dump.sql'
     command: bash -c "sleep 60 && mysql -h duzy-biceps-db -uroot -padmin prestashop < /home/database_dump.sql"
+    networks:
+      - duzy-biceps-net
 
   duzy-biceps-presta:
     image: prestashop/prestashop
@@ -23,9 +27,15 @@ services:
     environment:
       - DB_SERVER=duzy-biceps-db
       - DB_USER=root
-      - DB_PASSWORD=admin
+      - DB_PASSWD=admin
       - DB_PORT=3306
+      - PS_DEV_MOD=1
     volumes:
       - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\prestashop\html:/var/www/html'
     links:
       - duzy-biceps-db
+    networks:
+      - duzy-biceps-net
+
+networks:
+  duzy-biceps-net:
