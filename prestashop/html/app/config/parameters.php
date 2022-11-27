@@ -2,10 +2,10 @@
   'parameters' => 
   array (
     'database_host' => getenv('DB_SERVER'),
-    'database_port' => '',
+    'database_port' => getenv('DB_PORT'), 
     'database_name' => 'prestashop',
-    'database_user' => 'root',
-    'database_password' => 'admin',
+    'database_user' => getenv('DB_USER'),
+    'database_password' => getenv('DB_PASSWORD'),
     'database_prefix' => 'ps_',
     'database_engine' => 'InnoDB',
     'mailer_transport' => 'smtp',
