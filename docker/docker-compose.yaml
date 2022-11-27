@@ -1,10 +1,29 @@
 version: "1.0"
 services:
-  duzy-biceps-test11:
-    image: prestashop/prestashop
-    container_name: duzy-biceps-test11
+  duzy-biceps-db:
+    image: mysql:latest
+    container_name: duzy-biceps-db
+    # FIXME: usunąć to na końcu
     ports:
-      - "8080:80"
+      - "3307:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=prestashop
+  duzy-biceps-init:
+    image: mysql:latest
+    container_name: duzy-biceps-init
+    volumes: 
+      - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\mysql\database_dump.sql:/home/database_dump.sql'
+    command: bash -c "sleep 60 && mysql -h duzy-biceps-db -uroot -padmin prestashop < /home/database_dump.sql"
+  duzy-biceps-presta:
+    image: prestashop/prestashop
+    container_name: duzy-biceps-presta
+    # FIXME: usunąć to na końcu
+    ports:
+      - 8080:80
+    environment:
+      - DB_SERVER=172.25.0.3
     volumes:
       - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\prestashop\html:/var/www/html'
-  
+    links:
+      - duzy-biceps-db
