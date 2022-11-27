@@ -2,7 +2,9 @@ version: "1.0"
 services:
   duzy-biceps-test11:
     image: prestashop/prestashop
+    container_name: duzy-biceps-test11
     ports:
       - "8080:80"
     volumes:
-      - "C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\prestashop\html:/var/www/html"
+      - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\prestashop\html:/var/www/html'
+  
