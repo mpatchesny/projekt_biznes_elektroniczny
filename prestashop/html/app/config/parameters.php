@@ -5,7 +5,7 @@
     'database_port' => getenv('DB_PORT'), 
     'database_name' => 'prestashop',
     'database_user' => getenv('DB_USER'),
-    'database_password' => getenv('DB_PASSWORD'),
+    'database_password' => getenv('DB_PASSWD'),
     'database_prefix' => 'ps_',
     'database_engine' => 'InnoDB',
     'mailer_transport' => 'smtp',
