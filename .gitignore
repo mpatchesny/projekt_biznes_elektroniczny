@@ -12,3 +12,4 @@ DELETE FROM prestashop.ps_product*
 features_x_products.sql
 rollback.sql
 scripts/product_import/product_insert_template.sql
+prestashop/html2
