@@ -2,9 +2,9 @@ assets/
 images/
 htmls/
 dump.tar/
-*.bat
 *.txt
 *.exe
+run_docker.bat
 temp.py
 how-to.md
 traits.json
