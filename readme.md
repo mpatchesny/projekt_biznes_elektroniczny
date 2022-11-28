@@ -1,4 +1,4 @@
-# Projekt zaliczeniowy z przedmioty Biznes projekt_biznes_elektroniczny
+# Projekt zaliczeniowy z przedmioty Biznes elektroniczny
 
 ## Temat: sklep sportowy z odżywkami, zdrowną żywnością (produkty ze sklepu Ostrovit)
 
@@ -6,7 +6,7 @@
 
 ### Wymagania wstępne
 
-Docker
+* Docker
 
 ### Instalacja krok po kroku
 
