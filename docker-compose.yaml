@@ -1,0 +1,71 @@
+version: "3.4"
+services:
+  # punkt wejscia do kontenera, ktory bedzie serwował content na zewnatrz przez https,
+  # a wewnatrz po http
+  # duzy-biceps-cerber:
+  #   image: ngnix:latest
+  #   container_name: duzy-biceps-cerber
+  #   volumes:
+  #     - 
+  #   ports:
+  #     - 50670:80
+  #     - 39264:443
+  
+  # wlasciwy sklep prestashop
+  # duzy-biceps-presta:
+  #   image: prestashop/prestashop
+  #   container_name: duzy-biceps-presta
+  #   # FIXME: usunąć to na końcu
+  #   ports:
+  #     - 8080:80
+  #   # environment:
+  #   #   - DB_SERVER=duzy-biceps-db
+  #   #   - DB_USER=root
+  #   #   - DB_PASSWD=admin
+  #   #   - DB_PORT=3306
+  #   volumes:
+  #     - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\prestashop\html2:/var/www/html'
+  #   links:
+  #     - duzy-biceps-db
+
+  # baza danych do prestashopa
+  duzybiceps-db:
+    image: mysql:latest
+    container_name: duzybiceps-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_DATABASE=prestashop
+    volumes: 
+      - presta_db_storage:/var/lib/mysql
+
+  # inicjalizacja bazy danych za pomoca innego kontenera
+  duzybiceps-init:
+    image: mysql:latest
+    depends_on:
+      - "duzybiceps-db"
+    container_name: duzybiceps-init
+    volumes: 
+      - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\mysql\database_dump.sql:/home/database_dump.sql'
+    command: bash -c "sleep 60 && mysql -h duzybiceps-db -uroot -padmin prestashop < /home/database_dump.sql"
+
+  # sklep
+  duzybiceps-presta:
+    image: prestashop/prestashop
+    depends_on:
+      - "duzybiceps-db"
+    container_name: duzybiceps-presta
+    ports:
+      - 8080:80
+    environment:
+      - DB_SERVER=duzybiceps-db
+      - DB_USER=root
+      - DB_PASSWD=admin
+      - DB_PORT=3306
+    volumes: 
+      - presta_storage:/var/www/html
+    links:
+      - duzybiceps-db
+
+volumes:
+  presta_storage:
+  presta_db_storage:
