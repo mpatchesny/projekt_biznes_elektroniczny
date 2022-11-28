@@ -1,4 +1,4 @@
-# Projekt zaliczeniowy z przedmioty Biznes elektroniczny
+# Projekt zaliczeniowy z przedmiotu Biznes elektroniczny
 
 ## Temat: sklep sportowy z odżywkami, zdrowną żywnością (produkty ze sklepu Ostrovit)
 
