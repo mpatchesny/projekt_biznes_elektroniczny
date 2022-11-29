@@ -10,7 +10,7 @@
 
 ### Instalacja krok po kroku
 
-* sklonować repo
+* skopiować repo
 * w konsoli przejść do repo i uruchomić docker compose:
 ```docker compose up -d```
   * w trakcie tej operacji mogą zostać pobrane obrazy dockera: mysql i prestashop, jeżeli nie ma ich w rejestrze lokalnym
