@@ -1,7 +1,6 @@
 images/
 htmls/
 dump.tar/
-*.txt
 *.exe
 run_webscraper_with_args.bat
 run_docker.bat
