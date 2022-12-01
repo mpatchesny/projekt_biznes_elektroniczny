@@ -27,6 +27,8 @@ docker cp .\prestashop\html\error500.html duzybiceps-presta:/var/www/html
 docker cp .\prestashop\html\images.inc.php duzybiceps-presta:/var/www/html
 docker cp .\prestashop\html\index.php duzybiceps-presta:/var/www/html
 docker cp .\prestashop\html\init.php duzybiceps-presta:/var/www/html
+docker cp .\prestashop\html\INSTALL.txt duzybiceps-presta:/var/www/html
+docker cp .\prestashop\html\robots.txt duzybiceps-presta:/var/www/html
 docker cp .\prestashop\html\LICENSES duzybiceps-presta:/var/www/html
 docker cp .\prestashop\html\Makefile duzybiceps-presta:/var/www/html
 docker cp .\prestashop\html\phpstan.neon.dist duzybiceps-presta:/var/www/html

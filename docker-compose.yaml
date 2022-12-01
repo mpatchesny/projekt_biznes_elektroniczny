@@ -1,32 +1,16 @@
 version: "3.4"
 services:
-  # punkt wejscia do kontenera, ktory bedzie serwował content na zewnatrz przez https,
-  # a wewnatrz po http
-  # duzy-biceps-cerber:
-  #   image: ngnix:latest
-  #   container_name: duzy-biceps-cerber
-  #   volumes:
-  #     - 
+  # punkt wejscia do kontenera, ktory bedzie komunikowal sie ze swiatem
+  # duzybiceps-proxy:
+  #   image: nginx:latest
+  #   container_name: duzybiceps-proxy
   #   ports:
   #     - 50670:80
   #     - 39264:443
-  
-  # wlasciwy sklep prestashop
-  # duzy-biceps-presta:
-  #   image: prestashop/prestashop
-  #   container_name: duzy-biceps-presta
-  #   # FIXME: usunąć to na końcu
-  #   ports:
-  #     - 8080:80
-  #   # environment:
-  #   #   - DB_SERVER=duzy-biceps-db
-  #   #   - DB_USER=root
-  #   #   - DB_PASSWD=admin
-  #   #   - DB_PORT=3306
   #   volumes:
-  #     - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\prestashop\html2:/var/www/html'
-  #   links:
-  #     - duzy-biceps-db
+  #     - '.\nginx\default.conf:/etc/nginx/conf.d/default.conf'
+  #   networks:
+  #     - reverse-proxy-net
 
   # baza danych do prestashopa
   duzybiceps-db:
@@ -36,7 +20,9 @@ services:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=prestashop
     volumes: 
-      - presta_db_storage:/var/lib/mysql
+      - presta-db-storage:/var/lib/mysql
+    networks:
+      - prestashop-net
 
   # inicjalizacja bazy danych za pomoca innego kontenera
   duzybiceps-init:
@@ -45,8 +31,11 @@ services:
       - "duzybiceps-db"
     container_name: duzybiceps-init
     volumes: 
-      - 'C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\mysql\database_dump.sql:/home/database_dump.sql'
-    command: bash -c "sleep 60 && mysql -h duzybiceps-db -uroot -padmin prestashop < /home/database_dump.sql"
+      - '.\mysql\database_dump.sql:/home/database_dump.sql'
+    # to polecenie przywraca baze danych jezeli warunek jest prawdziwy
+    command: bash -c "if true; then sleep 60 && mysql -h duzybiceps-db -uroot -padmin prestashop < /home/database_dump.sql; fi"
+    networks:
+      - prestashop-net
 
   # sklep
   duzybiceps-presta:
@@ -56,16 +45,35 @@ services:
     container_name: duzybiceps-presta
     ports:
       - 8080:80
+      - 39264:443
     environment:
       - DB_SERVER=duzybiceps-db
       - DB_USER=root
       - DB_PASSWD=admin
       - DB_PORT=3306
-    volumes: 
-      - presta_storage:/var/www/html
+      - PS_INSTALL_AUTO=0
+      - PS_LANGUAGE=pl
+      - PS_COUNTRY=PL
+      - PS_FOLDER_ADMIN=admin123
+      - PS_FOLDER_INSTALL=install123
+      - PS_ENABLE_SSL=1
+      - ADMIN_MAIL=s187229@student.pg.edu.pl
+      - ADMIN_PASSWD=duzybiceps
     links:
       - duzybiceps-db
+    volumes: 
+      - presta-store-storage:/var/www/html
+      - '.\ssl\duzybiceps.crt:/etc/ssl/duzybiceps.crt'
+      - '.\ssl\duzybiceps.key:/etc/ssl/duzybiceps.key'
+      # - '.\apache2\sites-available\duzybiceps_http.conf:/etc/apache2/sites-available/duzybiceps_http.conf'
+      # - '.\apache2\sites-available\duzybiceps_https.conf:/etc/apache2/sites-available/duzybiceps_https.conf'
+    networks:
+      - prestashop-net
+    # command: bash "a2ensite etc/apache2/sites-available/duzybiceps_http.conf && a2enmod ssl && a2ensite etc/apache2/sites-available/duzybiceps_https.conf"
+
+networks:
+  prestashop-net:
 
 volumes:
-  presta_storage:
-  presta_db_storage:
+  presta-db-storage:
+  presta-store-storage:
