@@ -19,8 +19,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=admin
       - MYSQL_DATABASE=prestashop
-    volumes: 
-      - presta-db-storage:/var/lib/mysql
     networks:
       - prestashop-net
 
@@ -31,9 +29,22 @@ services:
       - "duzybiceps-db"
     container_name: duzybiceps-init
     volumes: 
-      - '.\mysql\database_dump.sql:/home/database_dump.sql'
-    # to polecenie przywraca baze danych jezeli warunek jest prawdziwy
-    command: bash -c "if true; then sleep 60 && mysql -h duzybiceps-db -uroot -padmin prestashop < /home/database_dump.sql; fi"
+      - './mysql/database_dump.sql:/home/database_dump.sql'
+    command:
+    - bash
+    - -c
+    - |
+      sleep 60
+      mysql -h duzybiceps-db -uroot -padmin prestashop --skip-column-names -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'prestashop';" > /home/wynik.txt
+      chmod +777 /home/wynik.txt
+      echo "Checked if database is populated."
+      if grep -q "0" /home/wynik.txt; then
+        echo "Database not populated, populating it now..."
+        mysql -h duzybiceps-db -uroot -padmin prestashop < /home/database_dump.sql
+        echo "Database populated!"
+      else
+        echo "Database already populated!"
+      fi
     networks:
       - prestashop-net
 
@@ -63,10 +74,10 @@ services:
       - duzybiceps-db
     volumes: 
       - presta-store-storage:/var/www/html
-      - '.\ssl\duzybiceps.crt:/etc/ssl/duzybiceps.crt'
-      - '.\ssl\duzybiceps.key:/etc/ssl/duzybiceps.key'
-      # - '.\apache2\sites-available\duzybiceps_http.conf:/etc/apache2/sites-available/duzybiceps_http.conf'
-      # - '.\apache2\sites-available\duzybiceps_https.conf:/etc/apache2/sites-available/duzybiceps_https.conf'
+      - './ssl/duzybiceps.crt:/etc/ssl/duzybiceps.crt'
+      - './ssl/duzybiceps.key:/etc/ssl/duzybiceps.key'
+      - './apache2/sites-enabled:/etc/apache2/sites-enabled'
+      - './apache2/sites-available:/etc/apache2/sites-available'
     networks:
       - prestashop-net
     # command: bash "a2ensite etc/apache2/sites-available/duzybiceps_http.conf && a2enmod ssl && a2ensite etc/apache2/sites-available/duzybiceps_https.conf"
