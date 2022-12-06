@@ -1,17 +1,5 @@
 version: "3.4"
 services:
-  # punkt wejscia do kontenera, ktory bedzie komunikowal sie ze swiatem
-  # duzybiceps-proxy:
-  #   image: nginx:latest
-  #   container_name: duzybiceps-proxy
-  #   ports:
-  #     - 50670:80
-  #     - 39264:443
-  #   volumes:
-  #     - '.\nginx\default.conf:/etc/nginx/conf.d/default.conf'
-  #   networks:
-  #     - reverse-proxy-net
-
   # baza danych do prestashopa
   duzybiceps-db:
     image: mysql:latest
@@ -76,11 +64,11 @@ services:
       - presta-store-storage:/var/www/html
       - './ssl/duzybiceps.crt:/etc/ssl/duzybiceps.crt'
       - './ssl/duzybiceps.key:/etc/ssl/duzybiceps.key'
+      - './apache2/apache2.conf:/etc/apache2/apache2.conf'
       - './apache2/sites-enabled:/etc/apache2/sites-enabled'
       - './apache2/sites-available:/etc/apache2/sites-available'
     networks:
       - prestashop-net
-    # command: bash "a2ensite etc/apache2/sites-available/duzybiceps_http.conf && a2enmod ssl && a2ensite etc/apache2/sites-available/duzybiceps_https.conf"
 
 networks:
   prestashop-net:
