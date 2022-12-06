@@ -18,3 +18,5 @@
 * uruchomić skrypt:
   * copy_selected_presta_folder.bat (wersja dla Windows), lub
   * copy_selected_presta_folder.sh (wersja dla Linux/ Unix)
+  * jeżeli podstrony sklepu nie działają, to trzeba nadać odpowiednie uprawnienia do folderów w kontenerze duzybiceps-presta:
+  chmod +777 -r /var/www/html
