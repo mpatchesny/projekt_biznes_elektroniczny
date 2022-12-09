@@ -2044,7 +2044,7 @@ class FrontContainer extends \PrestaShop\PrestaShop\Adapter\Container\LegacyCont
      */
     protected function getDoctrine_Dbal_DefaultConnectionService()
     {
-        return $this->services['doctrine.dbal.default_connection'] = ${($_ = isset($this->services['doctrine.dbal.connection_factory']) ? $this->services['doctrine.dbal.connection_factory'] : ($this->services['doctrine.dbal.connection_factory'] = new \Doctrine\Bundle\DoctrineBundle\ConnectionFactory([]))) && false ?: '_'}->createConnection(['driver' => 'pdo_mysql', 'host' => '172.18.0.3', 'port' => '', 'dbname' => 'prestashop', 'user' => 'root', 'password' => 'admin', 'charset' => 'utf8mb4', 'driverOptions' => [1002 => 'SET sql_mode=(SELECT REPLACE(@@sql_mode,\'ONLY_FULL_GROUP_BY\',\'\'))'], 'defaultTableOptions' => []], new \Doctrine\DBAL\Configuration(), new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this), ['enum' => 'string']);
+        return $this->services['doctrine.dbal.default_connection'] = ${($_ = isset($this->services['doctrine.dbal.connection_factory']) ? $this->services['doctrine.dbal.connection_factory'] : ($this->services['doctrine.dbal.connection_factory'] = new \Doctrine\Bundle\DoctrineBundle\ConnectionFactory([]))) && false ?: '_'}->createConnection(['driver' => 'pdo_mysql', 'host' => 'duzybiceps-db', 'port' => '3306', 'dbname' => 'prestashop', 'user' => 'root', 'password' => 'admin', 'charset' => 'utf8mb4', 'driverOptions' => [1002 => 'SET sql_mode=(SELECT REPLACE(@@sql_mode,\'ONLY_FULL_GROUP_BY\',\'\'))'], 'defaultTableOptions' => []], new \Doctrine\DBAL\Configuration(), new \Symfony\Bridge\Doctrine\ContainerAwareEventManager($this), ['enum' => 'string']);
     }
 
     /**
@@ -2059,14 +2059,14 @@ class FrontContainer extends \PrestaShop\PrestaShop\Adapter\Container\LegacyCont
         $b = new \Doctrine\Persistence\Mapping\Driver\MappingDriverChain();
 
         $c = ${($_ = isset($this->services['annotation_reader']) ? $this->services['annotation_reader'] : ($this->services['annotation_reader'] = new \Doctrine\Common\Annotations\AnnotationReader())) && false ?: '_'};
-        $d = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($c, [0 => '/var/www/html/modules/productcomments/src/Entity']);
-        $d->addExcludePaths([0 => '/var/www/html/modules/productcomments/src/Entity/index.php']);
-        $e = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($c, [0 => '/var/www/html/modules/ps_checkout/src/Entity']);
-        $e->addExcludePaths([0 => '/var/www/html/modules/ps_checkout/src/Entity/index.php']);
+        $d = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($c, [0 => '/var/www/html/modules/ps_checkout/src/Entity']);
+        $d->addExcludePaths([0 => '/var/www/html/modules/ps_checkout/src/Entity/index.php']);
+        $e = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($c, [0 => '/var/www/html/modules/productcomments/src/Entity']);
+        $e->addExcludePaths([0 => '/var/www/html/modules/productcomments/src/Entity/index.php']);
 
         $b->addDriver(new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($c, [0 => '/var/www/html/src/PrestaShopBundle/Entity']), 'PrestaShop');
-        $b->addDriver($d, 'PrestaShop\\Module\\ProductComment\\Entity');
-        $b->addDriver($e, 'PrestaShop\\Module\\PrestashopCheckout\\Entity');
+        $b->addDriver($d, 'PrestaShop\\Module\\PrestashopCheckout\\Entity');
+        $b->addDriver($e, 'PrestaShop\\Module\\ProductComment\\Entity');
 
         $a->setEntityNamespaces(['PrestaShopBundle\\Entity' => 'PrestaShop']);
         $a->setMetadataCacheImpl(${($_ = isset($this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache']) ? $this->services['doctrine_cache.providers.doctrine.orm.default_metadata_cache'] : $this->getDoctrineCache_Providers_Doctrine_Orm_DefaultMetadataCacheService()) && false ?: '_'});
@@ -2083,8 +2083,8 @@ class FrontContainer extends \PrestaShop\PrestaShop\Adapter\Container\LegacyCont
         $a->setEntityListenerResolver(${($_ = isset($this->services['doctrine.orm.default_entity_listener_resolver']) ? $this->services['doctrine.orm.default_entity_listener_resolver'] : ($this->services['doctrine.orm.default_entity_listener_resolver'] = new \Doctrine\Bundle\DoctrineBundle\Mapping\ContainerEntityListenerResolver($this))) && false ?: '_'});
         $a->setRepositoryFactory(new \Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory(new \Symfony\Component\DependencyInjection\ServiceLocator([])));
         $a->addCustomStringFunction('regexp', 'DoctrineExtensions\\Query\\Mysql\\Regexp');
-        $a->addEntityNamespace('Moduleproductcomments', 'PrestaShop\\Module\\ProductComment\\Entity');
         $a->addEntityNamespace('ModulepsCheckout', 'PrestaShop\\Module\\PrestashopCheckout\\Entity');
+        $a->addEntityNamespace('Moduleproductcomments', 'PrestaShop\\Module\\ProductComment\\Entity');
 
         $this->services['doctrine.orm.default_entity_manager'] = $instance = \Doctrine\ORM\EntityManager::create(${($_ = isset($this->services['doctrine.dbal.default_connection']) ? $this->services['doctrine.dbal.default_connection'] : $this->getDoctrine_Dbal_DefaultConnectionService()) && false ?: '_'}, $a);
 
@@ -4005,8 +4005,8 @@ class FrontContainer extends \PrestaShop\PrestaShop\Adapter\Container\LegacyCont
     protected function getDefaultParameters()
     {
         return [
-            'database_host' => '172.18.0.3',
-            'database_port' => '',
+            'database_host' => 'duzybiceps-db',
+            'database_port' => '3306',
             'database_name' => 'prestashop',
             'database_user' => 'root',
             'database_password' => 'admin',

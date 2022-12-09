@@ -1,8 +1,8 @@
 <?php return array (
   'parameters' => 
   array (
-    'database_host' => 'mysql-for-prestashop',
-    'database_port' => '',
+    'database_host' => 'duzybiceps-db',
+    'database_port' => '3306',
     'database_name' => 'prestashop',
     'database_user' => 'root',
     'database_password' => 'admin',
