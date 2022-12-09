@@ -21,9 +21,9 @@ def random_date(start, end):
     random_second = random.randrange(int_delta)
     return start + timedelta(seconds=random_second)
 
-def register_new_account(driver):
+def register_new_account(driver, url):
     try:
-        driver.get("http://localhost:8080/logowanie?create_account=1")
+        driver.get(url)
         
         gender = driver.find_element(By.ID, "field-id_gender-1")
         gender.click()
@@ -61,12 +61,12 @@ def register_new_account(driver):
     except:
         pass
 
-def add_random_product_to_basket(driver, amount):
+def add_random_product_to_basket(driver, amount, url):
     try:
         product_pages = []
-        product_pages.append("http://localhost:8080/2-strona-glowna")
+        product_pages.append(url)
         for i in range(2, 40):
-            product_pages.append(f"http://localhost:8080/2-strona-glowna?page={i}")
+            product_pages.append(f"{url}?page={i}")
         driver.get(random.choice(product_pages))
 
         links = []
@@ -88,9 +88,9 @@ def add_random_product_to_basket(driver, amount):
     except:
         pass
 
-def remove_random_product_from_basket(driver):
+def remove_random_product_from_basket(driver, url):
     try:
-        driver.get("http://localhost:8080/koszyk?action=show")
+        driver.get(url)
 
         products = driver.find_elements(By.CLASS_NAME, "remove-from-cart")
         for i in range(0, len(products)):
@@ -134,9 +134,9 @@ def confirm_order(driver):
     except:
         pass
 
-def do_checkout(driver):
+def do_checkout(driver, url):
     try:
-        driver.get("http://localhost:8080/zam%C3%B3wienie")
+        driver.get(url)
 
         address = driver.find_element(By.NAME, "address1")
         address.send_keys("Gabriela Narutowicza 11/12")
@@ -156,9 +156,9 @@ def do_checkout(driver):
     except:
         pass
 
-def check_order_status(driver):
+def check_order_status(driver, url):
     try:
-        driver.get("http://localhost:8080/historia-zamowien")
+        driver.get(url)
 
         li = driver.find_elements(By.TAG_NAME, "a")
         for x in li:
@@ -173,34 +173,53 @@ def run_test_scenario():
     driver = webdriver.Edge(executable_path = r"C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\tests\msedgedriver.exe")
     driver.minimize_window()
 
+    protocol = "http://"
+    host = "localhost"
+    port = "8080"
+    url = f"{protocol}{host}/{port}"
+
     print("Executing register_new_account...")
-    assert register_new_account(driver), "register new account with valid data should succeed"
+    assert register_new_account(driver, f"{url}logowanie?create_account=1"), "register new account with valid data should succeed"
+
     print("Executing add_random_product_to_basket #1...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #1 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #1 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #2...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #2 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #2 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #3...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #3 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #3 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #4...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #4 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #4 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #5...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #5 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #5 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #6...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #6 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #6 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #7...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #7 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #7 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #8...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #8 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #8 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #9...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #9 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #9 to basket should succeed"
+    
     print("Executing add_random_product_to_basket #10...")
-    assert add_random_product_to_basket(driver, random.randint(1, 5)) == True, "add product #10 to basket should succeed"
+    assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #10 to basket should succeed"
+    
     print("Executing remove_random_product_from_basket...")
-    assert remove_random_product_from_basket(driver), "remove random product from non-empty basket should succeed"
+    assert remove_random_product_from_basket(driver, f"{url}koszyk?action=show"), "remove random product from non-empty basket should succeed"
+    
     print("Executing do_checkout...")
-    assert do_checkout(driver), "checkout of non-empty basket should succeed"
+    assert do_checkout(driver, f"{url}zam%C3%B3wienie"), "checkout of non-empty basket should succeed"
+    
     print("Executing check_order_status...")
-    assert check_order_status(driver), "check order status when order has been placed should succeed"
+    assert check_order_status(driver, f"{url}historia-zamowien"), "check order status when order has been placed should succeed"
+    
     print("All OK!")
 
 run_test_scenario()
