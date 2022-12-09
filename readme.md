@@ -10,6 +10,8 @@
 
 ### Instalacja krok po kroku
 
+#### Instalacja lokalnie
+
 * skopiować repo
 * w konsoli przejść do repo i uruchomić docker compose:
 ```docker compose up -d```
@@ -19,4 +21,10 @@
   * copy_selected_presta_folder.bat (wersja dla Windows), lub
   * copy_selected_presta_folder.sh (wersja dla Linux/ Unix)
   * jeżeli podstrony sklepu nie działają, to trzeba nadać odpowiednie uprawnienia do folderów w kontenerze duzybiceps-presta:
-  chmod +777 -r /var/www/html
+  chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
+* uruchomić polecenie a2enmod ssl na duzybiceps-presta i zrestartować kontener
+* żeby odblokować SSL wejść w admin > Preferencje > włącz SSL + włącz SSL na wszystkich stronach
+
+#### Instalacja w klastrze
+
+TODO

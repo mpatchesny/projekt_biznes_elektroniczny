@@ -18,6 +18,7 @@ services:
     container_name: duzybiceps-init
     volumes: 
       - './mysql/database_dump.sql:/home/database_dump.sql'
+      - './mysql/presta_db_config.sql:/home/presta_db_config.sql'
     command:
     - bash
     - -c
@@ -29,6 +30,7 @@ services:
       if grep -q "0" /home/wynik.txt; then
         echo "Database not populated, populating it now..."
         mysql -h duzybiceps-db -uroot -padmin prestashop < /home/database_dump.sql
+        mysql -h duzybiceps-db -uroot -padmin prestashop < /home/presta_db_config.sql
         echo "Database populated!"
       else
         echo "Database already populated!"
@@ -44,9 +46,10 @@ services:
     container_name: duzybiceps-presta
     ports:
       - 8080:80
-      - 39264:443
+      - 8443:443
     environment:
       - DB_SERVER=duzybiceps-db
+      - DB_NAME=prestashop
       - DB_USER=root
       - DB_PASSWD=admin
       - DB_PORT=3306
@@ -62,11 +65,9 @@ services:
       - duzybiceps-db
     volumes: 
       - presta-store-storage:/var/www/html
+      - './apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf'
       - './ssl/duzybiceps.crt:/etc/ssl/duzybiceps.crt'
-      - './ssl/duzybiceps.key:/etc/ssl/duzybiceps.key'
-      - './apache2/apache2.conf:/etc/apache2/apache2.conf'
-      - './apache2/sites-enabled:/etc/apache2/sites-enabled'
-      - './apache2/sites-available:/etc/apache2/sites-available'
+      - './ssl/private/duzybiceps.key:/etc/ssl/private/duzybiceps.key'
     networks:
       - prestashop-net
 
