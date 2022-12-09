@@ -1,0 +1,1 @@
+openssl req -newkey rsa:2048 -new -nodes -x509 -keyout /etc/ssl/private/duzybiceps.key -out /etc/ssl/duzybiceps.crt -subj "/C=PL/ST=Pomorskie/L=Gdansk/O=DuzyBiceps/OU=IT/CN=."
