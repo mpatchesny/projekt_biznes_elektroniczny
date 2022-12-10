@@ -171,54 +171,68 @@ def check_order_status(driver, url):
 
 def run_test_scenario():
     driver = webdriver.Edge(executable_path = r"C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\tests\msedgedriver.exe")
-    driver.minimize_window()
+    # driver.minimize_window()
 
-    protocol = "http://"
+    protocol = "https://"
     host = "localhost"
-    port = "8080"
+    port = "8443"
     url = f"{protocol}{host}/{port}"
 
     print("Executing register_new_account...")
     assert register_new_account(driver, f"{url}logowanie?create_account=1"), "register new account with valid data should succeed"
+    time.sleep(2)
 
     print("Executing add_random_product_to_basket #1...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #1 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #2...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #2 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #3...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #3 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #4...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #4 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #5...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #5 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #6...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #6 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #7...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #7 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #8...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #8 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #9...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #9 to basket should succeed"
+    time.sleep(1)
     
     print("Executing add_random_product_to_basket #10...")
     assert add_random_product_to_basket(driver, random.randint(1, 5), f"{url}2-strona-glowna") == True, "add product #10 to basket should succeed"
+    time.sleep(1)
     
     print("Executing remove_random_product_from_basket...")
     assert remove_random_product_from_basket(driver, f"{url}koszyk?action=show"), "remove random product from non-empty basket should succeed"
+    time.sleep(1)
     
     print("Executing do_checkout...")
     assert do_checkout(driver, f"{url}zam%C3%B3wienie"), "checkout of non-empty basket should succeed"
+    time.sleep(1)
     
     print("Executing check_order_status...")
     assert check_order_status(driver, f"{url}historia-zamowien"), "check order status when order has been placed should succeed"
+    time.sleep(1)
     
     print("All OK!")
 
