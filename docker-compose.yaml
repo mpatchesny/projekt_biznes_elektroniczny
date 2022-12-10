@@ -40,7 +40,7 @@ services:
 
   # sklep
   duzybiceps-presta:
-    image: prestashop/prestashop
+    image: prestashop/prestashop:1.7.8.7 
     depends_on:
       - "duzybiceps-db"
     container_name: duzybiceps-presta
