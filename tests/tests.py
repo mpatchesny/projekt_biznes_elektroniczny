@@ -24,7 +24,7 @@ def random_date(start, end):
 def register_new_account(driver, url):
     try:
         driver.get(url)
-        
+
         gender = driver.find_element(By.ID, "field-id_gender-1")
         gender.click()
 
@@ -176,7 +176,7 @@ def run_test_scenario():
     protocol = "https://"
     host = "localhost"
     port = "8443"
-    url = f"{protocol}{host}/{port}"
+    url = f"{protocol}{host}/{port}/"
 
     print("Executing register_new_account...")
     assert register_new_account(driver, f"{url}logowanie?create_account=1"), "register new account with valid data should succeed"
