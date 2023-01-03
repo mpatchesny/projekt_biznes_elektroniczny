@@ -5,8 +5,8 @@ services:
     image: mysql:latest
     container_name: duzybiceps-db
     environment:
-      - MYSQL_ROOT_PASSWORD=admin
-      - MYSQL_DATABASE=prestashop
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     networks:
       - prestashop-net
 
@@ -45,22 +45,22 @@ services:
       - "duzybiceps-db"
     container_name: duzybiceps-presta
     ports:
-      - 8080:80
-      - 8443:443
+      - ${LOCAL_HTTP}:${CONTAINER_HTTP}
+      - ${LOCAL_HTTPS}:${CONTAINER_HTTPS}
     environment:
-      - DB_SERVER=duzybiceps-db
-      - DB_NAME=prestashop
-      - DB_USER=root
-      - DB_PASSWD=admin
-      - DB_PORT=3306
-      - PS_INSTALL_AUTO=0
-      - PS_LANGUAGE=pl
-      - PS_COUNTRY=PL
-      - PS_FOLDER_ADMIN=admin123
-      - PS_FOLDER_INSTALL=install123
-      - PS_ENABLE_SSL=1
-      - ADMIN_MAIL=s187229@student.pg.edu.pl
-      - ADMIN_PASSWD=duzybiceps
+      - DB_SERVER=${DB_SERVER}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_PORT=${DB_PORT}
+      - PS_INSTALL_AUTO=${PS_INSTALL_AUTO}
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_FOLDER_INSTALL=${PS_FOLDER_INSTALL}
+      - PS_ENABLE_SSL=${PS_ENABLE_SSL}
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
     links:
       - duzybiceps-db
     volumes: 
