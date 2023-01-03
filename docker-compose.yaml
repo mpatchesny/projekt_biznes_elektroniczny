@@ -3,7 +3,7 @@ services:
   # baza danych do prestashopa
   duzybiceps-db:
     image: mysql:latest
-    container_name: duzybiceps-db
+    container_name: ${DB_SERVER}
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -24,13 +24,13 @@ services:
     - -c
     - |
       sleep 60
-      mysql -h duzybiceps-db -u${DB_USER}-p${DB_PASSWD} ${DB_NAME} --skip-column-names -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '${DB_NAME}';" > /home/wynik.txt
+      mysql -h ${DB_SERVER} -u${DB_USER} -p${DB_PASSWD} ${DB_NAME} --skip-column-names -e "SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '${DB_NAME}';" > /home/wynik.txt
       chmod +777 /home/wynik.txt
       echo "Checked if database is populated."
       if grep -q "0" /home/wynik.txt; then
         echo "Database not populated, populating it now..."
-        mysql -h duzybiceps-db -u${DB_USER} -p${DB_PASSWD} ${DB_NAME} < /home/database_dump.sql
-        mysql -h duzybiceps-db -u${DB_USER} -p${DB_PASSWD} ${DB_NAME} < /home/presta_db_config.sql
+        mysql -h ${DB_SERVER} -u${DB_USER} -p${DB_PASSWD} ${DB_NAME} < /home/database_dump.sql
+        mysql -h ${DB_SERVER} -u${DB_USER} -p${DB_PASSWD} ${DB_NAME} < /home/presta_db_config.sql
         echo "Database populated!"
       else
         echo "Database already populated!"
