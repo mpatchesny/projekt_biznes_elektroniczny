@@ -5,9 +5,9 @@ with open("../config/local.env", "r") as f:
             db_name = line.split("=")[1]
         if line.startswith("DOMAIN_NAME"):
             domain_name = line.split("=")[1]
-        if line.startswith("LOCAL_HTTP"):
+        if line.startswith("LOCAL_HTTP="):
             local_http = line.split("=")[1]
-        if line.startswith("LOCAL_HTTPS"):
+        if line.startswith("LOCAL_HTTPS="):
             local_https = line.split("=")[1]
 
 with open("../mysql/presta_db_config_template.sql", "r") as f:
