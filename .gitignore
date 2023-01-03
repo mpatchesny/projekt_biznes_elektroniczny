@@ -13,3 +13,4 @@ rollback.sql
 scripts/product_import/product_insert_template.sql
 prestashop/html2
 ignore/
+presta_db_config.sql

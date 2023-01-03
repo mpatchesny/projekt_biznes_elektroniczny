@@ -13,7 +13,9 @@
 #### Instalacja lokalnie
 
 * skopiować repo
-* w konsoli przejść do repo i uruchomić docker compose:\
+* w konsoli przejść do repo
+* przejść do scripts i uruchomić skrypt substitute_environ_variables.py
+* uruchomić docker compose:\
 ```docker compose --env-file ./config/local.env up -d```
   * w trakcie tej operacji mogą zostać pobrane obrazy dockera: mysql i prestashop, jeżeli nie ma ich w rejestrze lokalnym
   * sklep będzie działał w pełni dopiero wtedy, kiedy kontener duzybiceps-init przestanie działać - jest to celowe, ten kontener ma za zadanie tylko przywrócić dane na bazie danych
