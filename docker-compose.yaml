@@ -63,9 +63,6 @@ services:
       - ADMIN_PASSWD=${ADMIN_PASSWD}
     volumes: 
       - presta-store-storage:/var/www/html
-      # - './apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf'
-      # - './ssl/duzybiceps.crt:/etc/ssl/duzybiceps.crt'
-      # - './ssl/private/duzybiceps.key:/etc/ssl/private/duzybiceps.key'
     networks:
       - prestashop-net
 
