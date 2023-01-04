@@ -1,4 +1,8 @@
-with open("../config/local.env", "r") as f:
+import sys
+
+env_path = sys.argv[1]
+
+with open(env_path, "r") as f:
     variables = f.read().split("\n")
     for line in variables:
         if line.startswith("DB_NAME"):
