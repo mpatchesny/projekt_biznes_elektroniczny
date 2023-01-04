@@ -14,7 +14,7 @@ services:
   duzybiceps-init:
     image: mysql:latest
     depends_on:
-      - "duzybiceps-db"
+      - "${DB_SERVER}"
     container_name: duzybiceps-init
     volumes: 
       - './mysql/database_dump.sql:/home/database_dump.sql'
@@ -42,7 +42,7 @@ services:
   duzybiceps-presta:
     image: prestashop/prestashop:1.7.8.7 
     depends_on:
-      - "duzybiceps-db"
+      - "${DB_SERVER}"
     container_name: duzybiceps-presta
     ports:
       - ${LOCAL_HTTP}:${CONTAINER_HTTP}
@@ -61,8 +61,6 @@ services:
       - PS_ENABLE_SSL=${PS_ENABLE_SSL}
       - ADMIN_MAIL=${ADMIN_MAIL}
       - ADMIN_PASSWD=${ADMIN_PASSWD}
-    links:
-      - duzybiceps-db
     volumes: 
       - presta-store-storage:/var/www/html
       - './apache2/sites-available/000-default.conf:/etc/apache2/sites-available/000-default.conf'
