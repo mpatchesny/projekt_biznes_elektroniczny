@@ -1,10 +1,10 @@
 version: "3.4"
 services:
   be_187229:
-    image: BE_187229_duzybiceps
+    image: 10.40.71.55:5000/be_187229_duzybiceps:latest
     depends_on:
       - "${DB_SERVER}"
-    container_name: duzybiceps-presta
+    container_name: be_187229
     ports:
       - ${HOST_HTTP}:${CONTAINER_HTTP}
       - ${HOST_HTTPS}:${CONTAINER_HTTPS}
@@ -23,7 +23,7 @@ services:
       - ADMIN_MAIL=${ADMIN_MAIL}
       - ADMIN_PASSWD=${ADMIN_PASSWD}
     volumes: 
-      - BE_187229_duzybiceps:/var/www/html
+      - be_187229_duzybiceps:/var/www/html
     command:
       - bash /home/populate_db.sh
     restart_policy:
@@ -33,4 +33,4 @@ services:
         window: 60s
 
 volumes:
-  BE_187229_duzybiceps:
+  be_187229_duzybiceps:
