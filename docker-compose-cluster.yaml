@@ -1,0 +1,36 @@
+version: "3.4"
+services:
+  duzybiceps-presta:
+    image: BE_187229_duzybiceps
+    depends_on:
+      - "${DB_SERVER}"
+    container_name: duzybiceps-presta
+    ports:
+      - ${HOST_HTTP}:${CONTAINER_HTTP}
+      - ${HOST_HTTPS}:${CONTAINER_HTTPS}
+    environment:
+      - DB_SERVER=${DB_SERVER}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWD=${DB_PASSWD}
+      - DB_PORT=${DB_PORT}
+      - PS_INSTALL_AUTO=${PS_INSTALL_AUTO}
+      - PS_LANGUAGE=${PS_LANGUAGE}
+      - PS_COUNTRY=${PS_COUNTRY}
+      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
+      - PS_FOLDER_INSTALL=${PS_FOLDER_INSTALL}
+      - PS_ENABLE_SSL=${PS_ENABLE_SSL}
+      - ADMIN_MAIL=${ADMIN_MAIL}
+      - ADMIN_PASSWD=${ADMIN_PASSWD}
+    volumes: 
+      - BE_187229_duzybiceps:/var/www/html
+    command:
+      - bash /home/populate_db.sh
+    restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 60s
+
+volumes:
+  BE_187229_duzybiceps:
