@@ -27,5 +27,8 @@ services:
     networks:
       - admin-mysql_default
 
+networks:
+  dmin-mysql_default
+
 volumes:
   be_187229_duzybiceps:
