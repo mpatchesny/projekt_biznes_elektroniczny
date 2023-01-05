@@ -32,7 +32,7 @@
 * zbudować obraz lokalnie z nazwą zgodną z instrukcją; patrz: [Budowanie obrazu](#budowanie-obrazu)
 * wysłać obraz do rejestru zgodnie z tym, co jest w instrukcji
 * uruchomić kontener w klastrze za pomocą polecenia:\
-```sudo docker stack deploy --env-file ./config/cluster.env -c docker-compose-cluster.yml be_187229 --with-registry-auth```
+```sudo docker stack deploy -c docker-compose-cluster.yaml be_187229 --with-registry-auth```
 * wykonać skrypty SQL na bazie danych:\
 `database_dump.sql`\
 `presta_db_config.sql.sql`
