@@ -24,11 +24,6 @@ services:
       - ADMIN_PASSWD=duzybiceps
     volumes: 
       - be_187229_duzybiceps:/var/www/html
-    networks:
-      - admin-mysql_default
-
-networks:
-  admin-mysql_default:
 
 volumes:
   be_187229_duzybiceps:
