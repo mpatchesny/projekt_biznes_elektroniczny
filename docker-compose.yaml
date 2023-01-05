@@ -6,7 +6,7 @@ services:
     container_name: ${DB_SERVER}
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_DATABASE=${DB_NAME}
     networks:
       - prestashop-net
 
