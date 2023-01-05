@@ -40,7 +40,7 @@ services:
 
   # sklep
   duzybiceps-presta:
-    image: duzybiceps:latest
+    image: BE_187229_duzybiceps
     depends_on:
       - "${DB_SERVER}"
     container_name: duzybiceps-presta
