@@ -3,32 +3,27 @@ services:
   be_187229:
     image: 10.40.71.55:5000/be_187229_duzybiceps:latest
     depends_on:
-      - "${DB_SERVER}"
+      - admin-mysql_db
     container_name: be_187229
     ports:
-      - ${HOST_HTTP}:${CONTAINER_HTTP}
-      - ${HOST_HTTPS}:${CONTAINER_HTTPS}
+      - 17228:80
+      - 17229:443
     environment:
-      - DB_SERVER=${DB_SERVER}
-      - DB_NAME=${DB_NAME}
-      - DB_USER=${DB_USER}
-      - DB_PASSWD=${DB_PASSWD}
-      - DB_PORT=${DB_PORT}
-      - PS_INSTALL_AUTO=${PS_INSTALL_AUTO}
-      - PS_LANGUAGE=${PS_LANGUAGE}
-      - PS_COUNTRY=${PS_COUNTRY}
-      - PS_FOLDER_ADMIN=${PS_FOLDER_ADMIN}
-      - PS_FOLDER_INSTALL=${PS_FOLDER_INSTALL}
-      - PS_ENABLE_SSL=${PS_ENABLE_SSL}
-      - ADMIN_MAIL=${ADMIN_MAIL}
-      - ADMIN_PASSWD=${ADMIN_PASSWD}
+      - DB_SERVER=admin-mysql_db
+      - DB_NAME=BE_187229
+      - DB_USER=root
+      - DB_PASSWD=student
+      - DB_PORT=3306
+      - PS_INSTALL_AUTO=0
+      - PS_LANGUAGE=pl
+      - PS_COUNTRY=PL
+      - PS_FOLDER_ADMIN=admin123
+      - PS_FOLDER_INSTALL=install123
+      - PS_ENABLE_SSL=1
+      - ADMIN_MAIL=s187229@student.pg.edu.pl
+      - ADMIN_PASSWD=duzybiceps
     volumes: 
       - be_187229_duzybiceps:/var/www/html
-    restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 5
-        window: 60s
 
 volumes:
   be_187229_duzybiceps:
