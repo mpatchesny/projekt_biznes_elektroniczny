@@ -15,8 +15,6 @@
 `substitute_environ_variables.py ../config/local.env`
 * w folderze głownym repo z konsoli uruchomić polecenie:\
 `docker build . -t BE_187229_duzybiceps`
-* przesłać zbudowany obraz do dockerhuba (tylko na potrzeby uruchomienia w klastrze):
-TODO
 
 ### Uruchomienie/ instalacja krok po kroku
 
@@ -31,9 +29,7 @@ TODO
 
 #### Uruchomienie w klastrze
 
-* pobrać zbudowany wcześniej obraz z dockerhuba do odpowiedniego folderu w klastrze:\
-TODO
+* zbudować obraz lokalnie, patrz: [Budowanie obrazu](### Budowanie obrazu)
 * wysłać obraz do rejestru zgodnie z tym, co jest w instrukcji
-* pobrać docker-compose-cluster.yml, cluster.env z repozytorium
 * uruchomić kontener w klastrze za pomocą polecenia:
 ```sudo docker stack deploy --env-file ./config/cluster.env -c docker-compose-cluster.yml BE_187229 --with-registry-auth```
