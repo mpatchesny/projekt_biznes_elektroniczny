@@ -45,8 +45,8 @@ services:
       - "${DB_SERVER}"
     container_name: duzybiceps-presta
     ports:
-      - ${LOCAL_HTTP}:${CONTAINER_HTTP}
-      - ${LOCAL_HTTPS}:${CONTAINER_HTTPS}
+      - ${HOST_HTTP}:${CONTAINER_HTTP}
+      - ${HOST_HTTPS}:${CONTAINER_HTTPS}
     environment:
       - DB_SERVER=${DB_SERVER}
       - DB_NAME=${DB_NAME}
