@@ -11,7 +11,7 @@
 ### Budowanie obrazu
 
 * skopiować repo
-* uruchmić skrypt `substitute_environ_variables.py` z folderu scripts, z argumentem wskazującym na odpowiedni plik ze zmiennymi środowiskowym, np. dla uruchomienia lokalnie: local.env, dla uruchomienia w klastrze: cluster.env:\
+* uruchmić skrypt `substitute_environ_variables.py` z folderu scripts, z argumentem wskazującym na odpowiedni plik ze zmiennymi środowiskowym, np: local.env:\
 `substitute_environ_variables.py ../config/local.env`
 * w folderze głownym repo z konsoli uruchomić polecenie:\
 `docker build -t <nazwa_obrazu> .`
