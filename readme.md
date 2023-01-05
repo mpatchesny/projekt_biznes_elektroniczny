@@ -29,7 +29,8 @@
 
 #### Uruchomienie w klastrze
 
-* zbudować obraz lokalnie, patrz: [Budowanie obrazu](#budowanie-obrazu)
+* zbudować obraz lokalnie z nazwą zgodną z instrukcją; patrz: [Budowanie obrazu](#budowanie-obrazu)
 * wysłać obraz do rejestru zgodnie z tym, co jest w instrukcji
-* uruchomić kontener w klastrze za pomocą polecenia:
+* uruchomić kontener w klastrze za pomocą polecenia:\
 ```sudo docker stack deploy --env-file ./config/cluster.env -c docker-compose-cluster.yml be_187229 --with-registry-auth```
+* żeby odblokować SSL wejść w admin > Preferencje > włącz SSL + włącz SSL na wszystkich stronach
