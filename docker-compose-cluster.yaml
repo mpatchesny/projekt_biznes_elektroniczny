@@ -1,6 +1,6 @@
 version: "3.4"
 services:
-  duzybiceps-presta:
+  be_187229:
     image: BE_187229_duzybiceps
     depends_on:
       - "${DB_SERVER}"

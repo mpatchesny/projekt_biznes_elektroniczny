@@ -14,7 +14,7 @@
 * uruchmić skrypt `substitute_environ_variables.py` z folderu scripts, z argumentem wskazującym na odpowiedni plik ze zmiennymi środowiskowym, np. dla uruchomienia lokalnie: local.env, dla uruchomienia w klastrze: cluster.env:\
 `substitute_environ_variables.py ../config/local.env`
 * w folderze głownym repo z konsoli uruchomić polecenie:\
-`docker build . -t BE_187229_duzybiceps`
+`docker build -t <nazwa_obrazu> .`
 
 ### Uruchomienie/ instalacja krok po kroku
 

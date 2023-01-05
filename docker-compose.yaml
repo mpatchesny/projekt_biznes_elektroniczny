@@ -40,7 +40,7 @@ services:
 
   # sklep
   duzybiceps-presta:
-    image: 10.40.71.55:5000/be_187229_duzybiceps
+    image: be_187229_duzybiceps
     depends_on:
       - admin-mysql_db
     container_name: duzybiceps-presta
