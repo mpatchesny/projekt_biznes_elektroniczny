@@ -24,8 +24,6 @@ services:
       - ADMIN_PASSWD=${ADMIN_PASSWD}
     volumes: 
       - be_187229_duzybiceps:/var/www/html
-    command:
-      - bash /home/populate_db.sh
     restart_policy:
         condition: on-failure
         delay: 5s
