@@ -39,7 +39,9 @@ COPY ./ssl/duzybiceps.crt /etc/ssl
 COPY ./ssl/private/duzybiceps.key /etc/ssl/private
 COPY ./mysql/database_dump.sql /home
 COPY ./mysql/presta_db_config.sql /home
+COPY ./scripts/populate_db.sh /home
 
+RUN chmod -R 755 /home/populate_db.sh
 RUN chown -R www-data:www-data /var/www/html && chmod -R 755 /var/www/html
 RUN a2enmod ssl
 
