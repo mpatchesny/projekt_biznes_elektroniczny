@@ -1,11 +1,11 @@
 version: "3.4"
 services:
   # baza danych do prestashopa
-  duzybiceps-db:
+  admin-mysql_db:
     image: mysql:latest
     container_name: ${DB_SERVER}
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWD}
       - MYSQL_DATABASE=${DB_NAME}
     networks:
       - prestashop-net
@@ -14,7 +14,7 @@ services:
   duzybiceps-init:
     image: mysql:latest
     depends_on:
-      - "${DB_SERVER}"
+      - admin-mysql_db
     container_name: duzybiceps-init
     volumes: 
       - './mysql/database_dump.sql:/home/database_dump.sql'
@@ -40,9 +40,9 @@ services:
 
   # sklep
   duzybiceps-presta:
-    image: BE_187229_duzybiceps
+    image: 10.40.71.55:5000/be_187229_duzybiceps
     depends_on:
-      - "${DB_SERVER}"
+      - admin-mysql_db
     container_name: duzybiceps-presta
     ports:
       - ${HOST_HTTP}:${CONTAINER_HTTP}
