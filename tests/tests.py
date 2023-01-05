@@ -173,10 +173,10 @@ def run_test_scenario():
     driver = webdriver.Edge(executable_path = r"C:\Users\strielok\Documents\Repo\studia\projekt_biznes_elektroniczny\tests\msedgedriver.exe")
     # driver.minimize_window()
 
-    protocol = "https://"
+    protocol = "https"
     host = "localhost"
     port = "8443"
-    url = f"{protocol}{host}/{port}/"
+    url = f"{protocol}://{host}:{port}/"
 
     print("Executing register_new_account...")
     assert register_new_account(driver, f"{url}logowanie?create_account=1"), "register new account with valid data should succeed"
