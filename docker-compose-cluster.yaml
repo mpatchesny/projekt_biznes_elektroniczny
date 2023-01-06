@@ -2,14 +2,12 @@ version: "3.4"
 services:
   be_187229:
     image: 10.40.71.55:5000/be_187229_duzybiceps:latest
-    depends_on:
-      - admin-mysql_db
     container_name: be_187229
     ports:
       - 17228:80
       - 17229:443
     environment:
-      - DB_SERVER=admin-mysql_db
+      - DB_SERVER=actina15.maas
       - DB_NAME=BE_187229
       - DB_USER=root
       - DB_PASSWD=student
@@ -24,6 +22,13 @@ services:
       - ADMIN_PASSWD=duzybiceps
     volumes: 
       - be_187229_duzybiceps:/var/www/html
+    deploy:
+      replicas: 1
 
 volumes:
   be_187229_duzybiceps:
+
+networks:
+  admin-mysql_default:
+    external:
+      name: admin-mysql_default
