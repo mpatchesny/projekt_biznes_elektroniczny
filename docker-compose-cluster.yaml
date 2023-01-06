@@ -2,7 +2,6 @@ version: "3.4"
 services:
   be_187229:
     image: 10.40.71.55:5000/be_187229_duzybiceps:latest
-    container_name: be_187229
     ports:
       - 17228:80
       - 17229:443
