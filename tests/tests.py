@@ -182,6 +182,8 @@ def run_test_scenario():
     url = f"{protocol}://{host}:{port}/"
     email = ""
 
+    time.sleep(3)
+
     print("Executing register_new_account...")
     assert register_new_account(driver, f"{url}logowanie?create_account=1", email=email), "register new account with valid data should succeed"
     time.sleep(1)
@@ -193,15 +195,15 @@ def run_test_scenario():
 
     print("Executing remove_random_product_from_basket...")
     assert remove_random_product_from_basket(driver, f"{url}koszyk?action=show"), "remove random product from non-empty basket should succeed"
-    time.sleep(1)
+    time.sleep(1.5)
 
     print("Executing do_checkout...")
     assert do_checkout(driver, f"{url}zam%C3%B3wienie"), "checkout of non-empty basket should succeed"
-    time.sleep(1)
+    time.sleep(1.5)
     
     print("Executing check_order_status...")
     assert check_order_status(driver, f"{url}historia-zamowien"), "check order status when order has been placed should succeed"
-    time.sleep(1)
+    time.sleep(1.5)
     
     print("All OK!")
 
