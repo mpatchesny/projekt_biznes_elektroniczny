@@ -246,6 +246,6 @@ def run_test_scenario():
 
 run_test_scenario()
 
-# Workaround to keep brower window opened after test execution
+# Workaround to keep browser window opened after test execution
 while True:
     pass
