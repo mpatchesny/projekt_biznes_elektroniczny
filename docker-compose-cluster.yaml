@@ -8,8 +8,8 @@ services:
     environment:
       - DB_SERVER=actina15.maas
       - DB_NAME=BE_187229
-      - DB_USER=root
-      - DB_PASSWD=student
+      - DB_USER=be_187229
+      - DB_PASSWD=abrakadabra
       - DB_PORT=3306
       - PS_INSTALL_AUTO=0
       - PS_LANGUAGE=pl
