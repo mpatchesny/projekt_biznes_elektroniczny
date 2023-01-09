@@ -1,7 +1,7 @@
 version: "3.4"
 services:
   be_187229:
-    image: 10.40.71.55:5000/be_187229_duzybiceps:latest
+    image: duzybiceps/presta:latest
     ports:
       - 17228:80
       - 17229:443
